@@ -1,0 +1,103 @@
+[gd_scene load_steps=7 format=3 uid="uid://b6q0a7d5x8y2v"]
+
+[ext_resource type="Script" path="res://scripts/exit_zone.gd" id="1_exit"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_exit"]
+size = Vector3(4, 3, 3)
+
+[sub_resource type="StandardMaterial3D" id="Material_GateFrame"]
+albedo_color = Color(0.15, 0.18, 0.24, 1)
+metallic = 0.7
+roughness = 0.3
+emission_enabled = true
+emission = Color(0.1, 0.3, 0.45, 1)
+emission_energy_multiplier = 0.6
+
+[sub_resource type="StandardMaterial3D" id="Material_GateParticle"]
+shading_mode = 0
+albedo_color = Color(0.2, 1, 0.45, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_GateParticle"]
+material = SubResource("Material_GateParticle")
+radius = 0.06
+height = 0.12
+radial_segments = 6
+rings = 4
+
+[sub_resource type="BoxMesh" id="BoxMesh_Pillar"]
+material = SubResource("Material_GateFrame")
+size = Vector3(0.6, 3, 0.6)
+
+[sub_resource type="BoxMesh" id="BoxMesh_Beam"]
+material = SubResource("Material_GateFrame")
+size = Vector3(4.2, 0.5, 0.6)
+
+[sub_resource type="BoxMesh" id="BoxMesh_Barrier"]
+size = Vector3(3, 2.6, 0.1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_Pad"]
+size = Vector3(3.6, 0.12, 2.8)
+
+[node name="ExitZone" type="Area3D"]
+collision_layer = 16
+collision_mask = 2
+script = ExtResource("1_exit")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+shape = SubResource("BoxShape3D_exit")
+
+[node name="Visuals" type="Node3D" parent="."]
+
+[node name="PillarLeft" type="MeshInstance3D" parent="Visuals"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.8, 1.5, 0)
+mesh = SubResource("BoxMesh_Pillar")
+
+[node name="PillarRight" type="MeshInstance3D" parent="Visuals"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.8, 1.5, 0)
+mesh = SubResource("BoxMesh_Pillar")
+
+[node name="TopBeam" type="MeshInstance3D" parent="Visuals"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
+mesh = SubResource("BoxMesh_Beam")
+
+[node name="LaserBarrier" type="MeshInstance3D" parent="Visuals"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.35, 0)
+mesh = SubResource("BoxMesh_Barrier")
+
+[node name="ExitPad" type="MeshInstance3D" parent="Visuals"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.06, 0)
+mesh = SubResource("BoxMesh_Pad")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Visuals"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+light_color = Color(1, 0.1, 0.1, 1)
+light_energy = 2.5
+
+[node name="UnlockParticles" type="CPUParticles3D" parent="Visuals"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0)
+emitting = false
+amount = 18
+lifetime = 1.0
+emission_shape = 2
+emission_box_extents = Vector3(1.5, 0.1, 1.0)
+direction = Vector3(0, 1, 0)
+spread = 20.0
+gravity = Vector3(0, 1.5, 0)
+initial_velocity_min = 1.5
+initial_velocity_max = 3.0
+scale_amount_min = 0.5
+scale_amount_max = 1.2
+mesh = SubResource("SphereMesh_GateParticle")
+omni_range = 6.0
+
+[node name="StatusLabel3D" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.7, 0)
+billboard = 1
+double_sided = false
+text = "EXIT LOCKED
+[ COMPLETE ALL OBJECTIVES ]"
+font_size = 28
+outline_size = 6
+outline_color = Color(0, 0, 0, 0.9)
+modulate = Color(1, 0.25, 0.25, 1)

@@ -1,0 +1,134 @@
+[gd_scene load_steps=10 format=3 uid="uid://c6xk3t8q9w5y1"]
+
+[ext_resource type="Script" path="res://scripts/hazard_zone.gd" id="1_hazard"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_hazard"]
+height = 2.5
+radius = 3.0
+
+[sub_resource type="StandardMaterial3D" id="Material_WarningRing"]
+albedo_color = Color(1, 0.2, 0.1, 1)
+emission_enabled = true
+emission = Color(1, 0.15, 0.05, 1)
+emission_energy_multiplier = 3.0
+
+[sub_resource type="TorusMesh" id="TorusMesh_WarningRing"]
+inner_radius = 2.85
+outer_radius = 3.1
+
+[sub_resource type="StandardMaterial3D" id="Material_WarningDisc"]
+transparency = 1
+albedo_color = Color(1, 0.1, 0.05, 0.25)
+emission_enabled = true
+emission = Color(1, 0.1, 0.05, 1)
+emission_energy_multiplier = 0.8
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_WarningDisc"]
+top_radius = 2.85
+bottom_radius = 2.85
+height = 0.02
+
+[sub_resource type="StandardMaterial3D" id="Material_ActiveField"]
+transparency = 1
+albedo_color = Color(1, 0.05, 0.15, 0.4)
+emission_enabled = true
+emission = Color(1, 0.05, 0.1, 1)
+emission_energy_multiplier = 4.0
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_ActiveField"]
+top_radius = 2.9
+bottom_radius = 2.9
+height = 2.2
+
+[sub_resource type="TorusMesh" id="TorusMesh_ActiveRing"]
+inner_radius = 2.8
+outer_radius = 3.15
+
+[sub_resource type="StandardMaterial3D" id="Material_SparkParticle"]
+shading_mode = 0
+albedo_color = Color(1, 0.25, 0.15, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_SparkParticle"]
+material = SubResource("Material_SparkParticle")
+size = Vector3(0.08, 0.22, 0.08)
+
+[node name="HazardZone" type="Area3D"]
+collision_layer = 8
+collision_mask = 2
+script = ExtResource("1_hazard")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.25, 0)
+shape = SubResource("CylinderShape3D_hazard")
+
+[node name="WarningVisuals" type="Node3D" parent="."]
+
+[node name="WarningRing" type="MeshInstance3D" parent="WarningVisuals"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)
+material_override = SubResource("Material_WarningRing")
+mesh = SubResource("TorusMesh_WarningRing")
+
+[node name="WarningDisc" type="MeshInstance3D" parent="WarningVisuals"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.02, 0)
+material_override = SubResource("Material_WarningDisc")
+mesh = SubResource("CylinderMesh_WarningDisc")
+
+[node name="WarningLight" type="OmniLight3D" parent="WarningVisuals"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
+light_color = Color(1, 0.15, 0.05, 1)
+light_energy = 2.0
+omni_range = 5.5
+
+[node name="WarningLabel" type="Label3D" parent="WarningVisuals"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.2, 0)
+billboard = 1
+double_sided = false
+text = "⚠ HAZARD IMMINENT ⚠
+[ CHARGING ]"
+font_size = 28
+outline_size = 6
+outline_color = Color(0, 0, 0, 0.9)
+modulate = Color(1, 0.85, 0.2, 1)
+
+[node name="ActiveVisuals" type="Node3D" parent="."]
+visible = false
+
+[node name="ActiveField" type="MeshInstance3D" parent="ActiveVisuals"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1, 0)
+material_override = SubResource("Material_ActiveField")
+mesh = SubResource("CylinderMesh_ActiveField")
+
+[node name="ActiveRing" type="MeshInstance3D" parent="ActiveVisuals"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.06, 0)
+material_override = SubResource("Material_WarningRing")
+mesh = SubResource("TorusMesh_ActiveRing")
+
+[node name="ElectricParticles" type="CPUParticles3D" parent="ActiveVisuals"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1, 0)
+amount = 20
+lifetime = 0.5
+emission_shape = 2
+emission_box_extents = Vector3(2.4, 0.9, 2.4)
+direction = Vector3(0, 1, 0)
+spread = 60.0
+gravity = Vector3(0, 3.0, 0)
+initial_velocity_min = 1.0
+initial_velocity_max = 3.5
+mesh = SubResource("BoxMesh_SparkParticle")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="ActiveVisuals"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+light_color = Color(1, 0.08, 0.15, 1)
+light_energy = 4.0
+omni_range = 6.0
+
+[node name="ActiveLabel" type="Label3D" parent="ActiveVisuals"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.4, 0)
+billboard = 1
+double_sided = false
+text = "⚡ SYSTEM DISRUPTION ⚡
+[ ACTIVE HAZARD ]"
+font_size = 28
+outline_size = 6
+outline_color = Color(0, 0, 0, 0.9)
+modulate = Color(1, 0.2, 0.2, 1)

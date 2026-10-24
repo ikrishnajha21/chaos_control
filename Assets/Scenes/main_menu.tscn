@@ -1,0 +1,643 @@
+[gd_scene load_steps=18 format=3 uid="uid://m1a2i3n4m5e6n"]
+
+[ext_resource type="Script" path="res://scripts/main_menu.gd" id="1_main_menu"]
+[ext_resource type="FontFile" uid="uid://dktl2nn0ryxm" path="res://assets/fonts/AgencyFB-Bold.ttf" id="2_font_title"]
+[ext_resource type="FontFile" uid="uid://bb5h5sn5u8ghj" path="res://assets/fonts/Bahnschrift.ttf" id="3_font_body"]
+[ext_resource type="FontFile" uid="uid://dnf3vds2k2jwa" path="res://assets/fonts/AgencyFB-Regular.ttf" id="4_font_sub"]
+[ext_resource type="Script" path="res://scripts/menu_background.gd" id="5_menu_bg"]
+[ext_resource type="Shader" path="res://shaders/menu_post_process.gdshader" id="6_post_shader"]
+
+[sub_resource type="Gradient" id="Gradient_Bg"]
+offsets = PackedFloat32Array(0, 0.45, 0.82, 1)
+colors = PackedColorArray(0.04, 0.08, 0.14, 1, 0.025, 0.045, 0.08, 1, 0.012, 0.02, 0.035, 1, 0.008, 0.012, 0.02, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_Bg"]
+gradient = SubResource("Gradient_Bg")
+width = 1280
+height = 720
+fill = 1
+fill_from = Vector2(0.5, 0.4)
+fill_to = Vector2(0.5, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_Post"]
+shader = ExtResource("6_post_shader")
+shader_parameter/scanline_density = 280.0
+shader_parameter/scanline_opacity = 0.05
+shader_parameter/vignette_intensity = 0.75
+shader_parameter/chromatic_aberration = 0.0012
+shader_parameter/glitch_intensity = 0.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBox_BtnNormal"]
+content_margin_left = 22.0
+content_margin_top = 11.0
+content_margin_right = 20.0
+content_margin_bottom = 11.0
+bg_color = Color(0.04, 0.07, 0.12, 0.92)
+border_width_left = 6
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.14, 0.45, 0.65, 0.55)
+corner_radius_top_left = 10
+corner_radius_bottom_right = 10
+shadow_color = Color(0.02, 0.15, 0.25, 0.3)
+shadow_size = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBox_BtnHover"]
+content_margin_left = 24.0
+content_margin_top = 11.0
+content_margin_right = 18.0
+content_margin_bottom = 11.0
+bg_color = Color(0.08, 0.16, 0.28, 0.98)
+border_width_left = 7
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.25, 0.95, 1, 1)
+corner_radius_top_left = 10
+corner_radius_bottom_right = 10
+shadow_color = Color(0.15, 0.85, 1, 0.35)
+shadow_size = 14
+
+[sub_resource type="StyleBoxFlat" id="StyleBox_BtnPressed"]
+content_margin_left = 22.0
+content_margin_top = 11.0
+content_margin_right = 20.0
+content_margin_bottom = 11.0
+bg_color = Color(0.02, 0.04, 0.08, 1)
+border_width_left = 6
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.35, 1, 0.8, 1)
+corner_radius_top_left = 10
+corner_radius_bottom_right = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBox_PrimaryNormal"]
+content_margin_left = 24.0
+content_margin_top = 12.0
+content_margin_right = 22.0
+content_margin_bottom = 12.0
+bg_color = Color(0.06, 0.14, 0.24, 0.95)
+border_width_left = 8
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.25, 0.92, 1, 0.95)
+corner_radius_top_left = 12
+corner_radius_bottom_right = 12
+shadow_color = Color(0.15, 0.85, 1, 0.3)
+shadow_size = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBox_PrimaryHover"]
+content_margin_left = 26.0
+content_margin_top = 12.0
+content_margin_right = 20.0
+content_margin_bottom = 12.0
+bg_color = Color(0.11, 0.24, 0.38, 1)
+border_width_left = 9
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.4, 1, 0.95, 1)
+corner_radius_top_left = 12
+corner_radius_bottom_right = 12
+shadow_color = Color(0.25, 1, 0.95, 0.55)
+shadow_size = 18
+
+[sub_resource type="StyleBoxFlat" id="StyleBox_Panel"]
+content_margin_left = 30.0
+content_margin_top = 24.0
+content_margin_right = 30.0
+content_margin_bottom = 24.0
+bg_color = Color(0.025, 0.045, 0.08, 0.97)
+border_width_left = 3
+border_width_top = 2
+border_width_right = 3
+border_width_bottom = 2
+border_color = Color(0.18, 0.65, 0.9, 0.85)
+corner_radius_top_left = 10
+corner_radius_bottom_right = 10
+shadow_color = Color(0, 0, 0, 0.9)
+shadow_size = 24
+
+[sub_resource type="Theme" id="Theme_Cyber"]
+default_font = ExtResource("3_font_body")
+default_font_size = 16
+Button/colors/font_color = Color(0.88, 0.94, 1, 1)
+Button/colors/font_hover_color = Color(0.25, 0.95, 1, 1)
+Button/colors/font_pressed_color = Color(0.4, 1, 0.85, 1)
+Button/colors/font_focus_color = Color(0.25, 0.95, 1, 1)
+Button/fonts/font = ExtResource("3_font_body")
+Button/styles/disabled = SubResource("StyleBox_BtnNormal")
+Button/styles/focus = SubResource("StyleBox_BtnHover")
+Button/styles/hover = SubResource("StyleBox_BtnHover")
+Button/styles/normal = SubResource("StyleBox_BtnNormal")
+Button/styles/pressed = SubResource("StyleBox_BtnPressed")
+PanelContainer/styles/panel = SubResource("StyleBox_Panel")
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_Cyber")
+script = ExtResource("1_main_menu")
+
+[node name="DeepGradientBg" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_Bg")
+expand_mode = 1
+
+[node name="MenuBackground" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("5_menu_bg")
+
+[node name="TopAccentLine" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 2.0
+grow_horizontal = 2
+color = Color(0.18, 0.85, 1, 0.6)
+
+[node name="BottomAccentLine" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -2.0
+grow_horizontal = 2
+grow_vertical = 0
+color = Color(1, 0.28, 0.22, 0.6)
+
+[node name="MainContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 60
+theme_override_constants/margin_top = 28
+theme_override_constants/margin_right = 60
+theme_override_constants/margin_bottom = 28
+
+[node name="ContentBox" type="VBoxContainer" parent="MainContainer"]
+layout_mode = 2
+theme_override_constants/separation = 22
+alignment = 1
+
+[node name="HeaderBox" type="VBoxContainer" parent="MainContainer/ContentBox"]
+layout_mode = 2
+theme_override_constants/separation = 3
+alignment = 1
+
+[node name="DiagnosticTag" type="Label" parent="MainContainer/ContentBox/HeaderBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.4, 0.75, 0.9, 0.75)
+theme_override_fonts/font = ExtResource("3_font_body")
+theme_override_font_sizes/font_size = 11
+text = "[ PROTOCOL // SYS.BREACH-02 ]   •   FACILITY SECURITY: SEVERED   •   TACTICAL AI GRID: ONLINE"
+horizontal_alignment = 1
+
+[node name="Title" type="Label" parent="MainContainer/ContentBox/HeaderBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.2, 0.95, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0.15, 0.28, 0.9)
+theme_override_colors/font_outline_color = Color(0.015, 0.04, 0.08, 0.98)
+theme_override_constants/shadow_offset_x = 4
+theme_override_constants/shadow_offset_y = 4
+theme_override_constants/outline_size = 6
+theme_override_fonts/font = ExtResource("2_font_title")
+theme_override_font_sizes/font_size = 72
+text = "CORE BREACH"
+horizontal_alignment = 1
+
+[node name="Subtitle" type="Label" parent="MainContainer/ContentBox/HeaderBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.34, 0.24, 1)
+theme_override_colors/font_shadow_color = Color(0.35, 0.05, 0.05, 0.85)
+theme_override_colors/font_outline_color = Color(0.04, 0.015, 0.015, 0.98)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_constants/outline_size = 4
+theme_override_fonts/font = ExtResource("2_font_title")
+theme_override_font_sizes/font_size = 20
+text = "CONTAIN THE CHAOS. SURVIVE THE BREACH."
+horizontal_alignment = 1
+
+[node name="HeaderDivider" type="HBoxContainer" parent="MainContainer/ContentBox/HeaderBox"]
+layout_mode = 2
+theme_override_constants/separation = 14
+alignment = 1
+
+[node name="LineLeft" type="ColorRect" parent="MainContainer/ContentBox/HeaderBox/HeaderDivider"]
+custom_minimum_size = Vector2(110, 2)
+layout_mode = 2
+size_flags_vertical = 4
+color = Color(0.2, 0.85, 1, 0.75)
+
+[node name="TagLabel" type="Label" parent="MainContainer/ContentBox/HeaderBox/HeaderDivider"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.82, 0.92, 0.85)
+theme_override_fonts/font = ExtResource("3_font_body")
+theme_override_font_sizes/font_size = 12
+text = "◈  RUNNER VS SABOTEUR  •  TACTICAL LOCAL COMBAT  ◈"
+
+[node name="LineRight" type="ColorRect" parent="MainContainer/ContentBox/HeaderBox/HeaderDivider"]
+custom_minimum_size = Vector2(110, 2)
+layout_mode = 2
+size_flags_vertical = 4
+color = Color(1, 0.3, 0.22, 0.75)
+
+[node name="NavButtons" type="VBoxContainer" parent="MainContainer/ContentBox"]
+custom_minimum_size = Vector2(380, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = 11
+
+[node name="PlayButton" type="Button" parent="MainContainer/ContentBox/NavButtons"]
+custom_minimum_size = Vector2(0, 56)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_font_body")
+theme_override_font_sizes/font_size = 19
+theme_override_styles/hover = SubResource("StyleBox_PrimaryHover")
+theme_override_styles/pressed = SubResource("StyleBox_BtnPressed")
+theme_override_styles/normal = SubResource("StyleBox_PrimaryNormal")
+text = "▶  [01]  INITIALIZE BREACH  //  QUICK MATCH"
+
+[node name="ArenaSelectButton" type="Button" parent="MainContainer/ContentBox/NavButtons"]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_font_body")
+theme_override_font_sizes/font_size = 16
+text = "⬡  [02]  SECTOR SELECTION  //  ARENAS"
+
+[node name="HowToPlayButton" type="Button" parent="MainContainer/ContentBox/NavButtons"]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_font_body")
+theme_override_font_sizes/font_size = 16
+text = "◈  [03]  TACTICAL BRIEFING  //  HOW TO PLAY"
+
+[node name="SettingsButton" type="Button" parent="MainContainer/ContentBox/NavButtons"]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_font_body")
+theme_override_font_sizes/font_size = 16
+text = "⚙  [04]  SYSTEM CONFIG  //  SETTINGS"
+
+[node name="QuitButton" type="Button" parent="MainContainer/ContentBox/NavButtons"]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_font_body")
+theme_override_font_sizes/font_size = 16
+text = "✖  [05]  TERMINATE SESSION  //  QUIT"
+
+[node name="FooterInfo" type="Label" parent="MainContainer/ContentBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5, 0.65, 0.78, 0.75)
+theme_override_fonts/font = ExtResource("3_font_body")
+theme_override_font_sizes/font_size = 13
+text = "LOCAL 2-PLAYER SAME-KEYBOARD ARCADE   •   BEST OF 3 ROUNDS   •   RUNNER VS SABOTEUR"
+horizontal_alignment = 1
+
+[node name="PostProcessOverlay" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_Post")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Overlays" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 35
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 35
+
+[node name="ArenaSelectPanel" type="PanelContainer" parent="Overlays"]
+visible = false
+layout_mode = 2
+
+[node name="VBox" type="VBoxContainer" parent="Overlays/ArenaSelectPanel"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="PanelTitle" type="Label" parent="Overlays/ArenaSelectPanel/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.2, 0.95, 1, 1)
+theme_override_fonts/font = ExtResource("2_font_title")
+theme_override_font_sizes/font_size = 32
+text = "SECTOR SELECTION // ARENA ARCHIVES"
+horizontal_alignment = 1
+
+[node name="ArenaCards" type="HBoxContainer" parent="Overlays/ArenaSelectPanel/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 18
+
+[node name="CardTraining" type="Button" parent="Overlays/ArenaSelectPanel/VBox/ArenaCards"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("3_font_body")
+theme_override_font_sizes/font_size = 15
+text = "SECTOR 01: RESEARCH FACILITY
+
+[BIO-CONTAINMENT & LABS]
+
+• 14 partitioned research laboratories
+• Central octagon hub & hologram core
+• Dynamic security laser grid & blast gates"
+
+[node name="CardGravity" type="Button" parent="Overlays/ArenaSelectPanel/VBox/ArenaCards"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("3_font_body")
+theme_override_font_sizes/font_size = 15
+text = "SECTOR 02: POWER CORE
+
+[HIGH-OUTPUT REACTOR]
+
+• Concentric stepped reactor tiers & core
+• 4 massive generators with impellers
+• Retractable chasm bridges & catwalks"
+
+[node name="CardReactor" type="Button" parent="Overlays/ArenaSelectPanel/VBox/ArenaCards"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("3_font_body")
+theme_override_font_sizes/font_size = 15
+text = "SECTOR 03: UNDERGROUND COMPLEX
+
+[FORTIFIED BUNKER NETWORK]
+
+• 13 blast-shielded security chambers
+• Heavy blast doors & hydraulic pumps
+• Plasma radiation chamber & core vault"
+
+[node name="SelectedDescLabel" type="Label" parent="Overlays/ArenaSelectPanel/VBox"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_font_body")
+theme_override_font_sizes/font_size = 15
+text = "SELECTED: [ RESEARCH FACILITY ]"
+horizontal_alignment = 1
+
+[node name="BottomActions" type="HBoxContainer" parent="Overlays/ArenaSelectPanel/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 24
+alignment = 1
+
+[node name="BackArenaButton" type="Button" parent="Overlays/ArenaSelectPanel/VBox/BottomActions"]
+custom_minimum_size = Vector2(180, 48)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_font_body")
+theme_override_font_sizes/font_size = 16
+text = "◀  BACK TO MENU"
+
+[node name="StartMatchButton" type="Button" parent="Overlays/ArenaSelectPanel/VBox/BottomActions"]
+custom_minimum_size = Vector2(240, 48)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_font_body")
+theme_override_font_sizes/font_size = 17
+theme_override_styles/hover = SubResource("StyleBox_PrimaryHover")
+theme_override_styles/normal = SubResource("StyleBox_PrimaryNormal")
+text = "▶  START MATCH"
+
+[node name="HowToPlayPanel" type="PanelContainer" parent="Overlays"]
+visible = false
+layout_mode = 2
+
+[node name="VBox" type="VBoxContainer" parent="Overlays/HowToPlayPanel"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="HowToTitle" type="Label" parent="Overlays/HowToPlayPanel/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.2, 0.95, 1, 1)
+theme_override_fonts/font = ExtResource("2_font_title")
+theme_override_font_sizes/font_size = 32
+text = "TACTICAL BRIEFING // SYSTEM MANUAL"
+horizontal_alignment = 1
+
+[node name="ControlsRow" type="HBoxContainer" parent="Overlays/HowToPlayPanel/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 24
+
+[node name="P1Box" type="PanelContainer" parent="Overlays/HowToPlayPanel/VBox/ControlsRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VBox" type="VBoxContainer" parent="Overlays/HowToPlayPanel/VBox/ControlsRow/P1Box"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="Label" type="Label" parent="Overlays/HowToPlayPanel/VBox/ControlsRow/P1Box/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.2, 0.92, 1, 1)
+theme_override_fonts/font = ExtResource("2_font_title")
+theme_override_font_sizes/font_size = 22
+text = "PLAYER 1 CONTROLS (WASD)"
+horizontal_alignment = 1
+
+[node name="Keys" type="Label" parent="Overlays/HowToPlayPanel/VBox/ControlsRow/P1Box/VBox"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_font_body")
+theme_override_font_sizes/font_size = 14
+text = "• Move: [W] [A] [S] [D]   |   Jump: [SPACE] or [C]
+• Override Terminal (Runner): [E]
+• Mobility Surge & Pulse (Runner): [Q]
+• Deploy Sabotage Trap / Scramble (Saboteur): [E]"
+
+[node name="P2Box" type="PanelContainer" parent="Overlays/HowToPlayPanel/VBox/ControlsRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VBox" type="VBoxContainer" parent="Overlays/HowToPlayPanel/VBox/ControlsRow/P2Box"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="Label" type="Label" parent="Overlays/HowToPlayPanel/VBox/ControlsRow/P2Box/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.35, 0.22, 1)
+theme_override_fonts/font = ExtResource("2_font_title")
+theme_override_font_sizes/font_size = 22
+text = "PLAYER 2 CONTROLS (ARROWS)"
+horizontal_alignment = 1
+
+[node name="Keys" type="Label" parent="Overlays/HowToPlayPanel/VBox/ControlsRow/P2Box/VBox"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_font_body")
+theme_override_font_sizes/font_size = 14
+text = "• Move: [↑] [←] [↓] [→]   |   Jump: [CTRL] or [KP 0]
+• Override Terminal (Runner): [ENTER] or [SPACE]
+• Mobility Surge & Pulse (Runner): [SHIFT] or [/]
+• Deploy Sabotage Trap / Scramble (Saboteur): [SPACE] / [ENTER]"
+
+[node name="RulesBox" type="PanelContainer" parent="Overlays/HowToPlayPanel/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VBox" type="VBoxContainer" parent="Overlays/HowToPlayPanel/VBox/RulesBox"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="RulesTitle" type="Label" parent="Overlays/HowToPlayPanel/VBox/RulesBox/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.88, 0.3, 1)
+theme_override_fonts/font = ExtResource("2_font_title")
+theme_override_font_sizes/font_size = 22
+text = "GAMEPLAY OBJECTIVES & ROLES"
+
+[node name="RulesText" type="Label" parent="Overlays/HowToPlayPanel/VBox/RulesBox/VBox"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_font_body")
+theme_override_font_sizes/font_size = 14
+text = "• OBJECTIVE RUNNER (CYAN PHANTOM):
+  Navigate the facility and hack all 3 Control Terminals (Node Alpha, Beta, Gamma). Activating nodes rearranges security blast gates and catwalks. Once all 3 nodes are online, the Extraction Gate unlocks. Reach the extraction portal before the 120s timer expires to win the round!
+
+• SABOTEUR (CRIMSON WRAITH):
+  Deploy localized EMP Disruption Traps, scramble terminals, or overload active laser grids. Glitches and slows the Runner upon contact. Stall the Runner until the 120s round timer expires to win!
+
+• MATCH FORMAT:
+  Competitive Best-of-3 rounds. Roles automatically switch after each round. First player to score 2 points wins the match!"
+autowrap_mode = 2
+
+[node name="BackHowToPlayButton" type="Button" parent="Overlays/HowToPlayPanel/VBox"]
+custom_minimum_size = Vector2(220, 46)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_fonts/font = ExtResource("3_font_body")
+theme_override_font_sizes/font_size = 16
+text = "◀  BACK TO MENU"
+
+[node name="SettingsPanel" type="PanelContainer" parent="Overlays"]
+visible = false
+custom_minimum_size = Vector2(520, 340)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="VBox" type="VBoxContainer" parent="Overlays/SettingsPanel"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="SettingsTitle" type="Label" parent="Overlays/SettingsPanel/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.2, 0.95, 1, 1)
+theme_override_fonts/font = ExtResource("2_font_title")
+theme_override_font_sizes/font_size = 30
+text = "SYSTEM CONFIGURATION"
+horizontal_alignment = 1
+
+[node name="SettingsList" type="VBoxContainer" parent="Overlays/SettingsPanel/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="FullscreenRow" type="HBoxContainer" parent="Overlays/SettingsPanel/VBox/SettingsList"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Overlays/SettingsPanel/VBox/SettingsList/FullscreenRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("3_font_body")
+theme_override_font_sizes/font_size = 16
+text = "Fullscreen Mode:"
+
+[node name="FullscreenCheck" type="CheckButton" parent="Overlays/SettingsPanel/VBox/SettingsList/FullscreenRow"]
+layout_mode = 2
+
+[node name="AudioRow" type="HBoxContainer" parent="Overlays/SettingsPanel/VBox/SettingsList"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Overlays/SettingsPanel/VBox/SettingsList/AudioRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("3_font_body")
+theme_override_font_sizes/font_size = 16
+text = "Mute Master Audio:"
+
+[node name="MuteCheck" type="CheckButton" parent="Overlays/SettingsPanel/VBox/SettingsList/AudioRow"]
+layout_mode = 2
+
+[node name="MusicRow" type="HBoxContainer" parent="Overlays/SettingsPanel/VBox/SettingsList"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Overlays/SettingsPanel/VBox/SettingsList/MusicRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("3_font_body")
+theme_override_font_sizes/font_size = 16
+text = "Music Volume:"
+
+[node name="MusicSlider" type="HSlider" parent="Overlays/SettingsPanel/VBox/SettingsList/MusicRow"]
+custom_minimum_size = Vector2(180, 24)
+layout_mode = 2
+size_flags_vertical = 4
+value = 75.0
+
+[node name="SfxRow" type="HBoxContainer" parent="Overlays/SettingsPanel/VBox/SettingsList"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Overlays/SettingsPanel/VBox/SettingsList/SfxRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("3_font_body")
+theme_override_font_sizes/font_size = 16
+text = "SFX Volume:"
+
+[node name="SfxSlider" type="HSlider" parent="Overlays/SettingsPanel/VBox/SettingsList/SfxRow"]
+custom_minimum_size = Vector2(180, 24)
+layout_mode = 2
+size_flags_vertical = 4
+value = 85.0
+
+[node name="ResolutionNote" type="Label" parent="Overlays/SettingsPanel/VBox/SettingsList"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.6, 0.72, 0.85, 0.75)
+theme_override_fonts/font = ExtResource("3_font_body")
+theme_override_font_sizes/font_size = 13
+text = "Display: 1280x720 Canvas Scaled (Ultra-Wide, 1080p, 1440p, 4K Supported)"
+horizontal_alignment = 1
+
+[node name="BackSettingsButton" type="Button" parent="Overlays/SettingsPanel/VBox"]
+custom_minimum_size = Vector2(200, 46)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_fonts/font = ExtResource("3_font_body")
+theme_override_font_sizes/font_size = 16
+text = "◀  BACK TO MENU"
+
+[node name="FadeOverlay" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0)

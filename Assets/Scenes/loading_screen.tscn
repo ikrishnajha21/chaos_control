@@ -1,0 +1,255 @@
+[gd_scene load_steps=12 format=3 uid="uid://l8o1a2d3i4n5g"]
+
+[ext_resource type="Script" path="res://scripts/loading_screen.gd" id="1_loading"]
+[ext_resource type="FontFile" uid="uid://dktl2nn0ryxm" path="res://assets/fonts/AgencyFB-Bold.ttf" id="2_font_title"]
+[ext_resource type="FontFile" uid="uid://bb5h5sn5u8ghj" path="res://assets/fonts/Bahnschrift.ttf" id="3_font_body"]
+[ext_resource type="Script" path="res://scripts/menu_background.gd" id="4_menu_bg"]
+[ext_resource type="Shader" path="res://shaders/menu_post_process.gdshader" id="5_post_shader"]
+
+[sub_resource type="Gradient" id="Gradient_Bg"]
+offsets = PackedFloat32Array(0, 0.45, 0.85, 1)
+colors = PackedColorArray(0.04, 0.08, 0.14, 1, 0.025, 0.045, 0.08, 1, 0.012, 0.02, 0.035, 1, 0.008, 0.012, 0.02, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_Bg"]
+gradient = SubResource("Gradient_Bg")
+width = 1280
+height = 720
+fill = 1
+fill_from = Vector2(0.5, 0.4)
+fill_to = Vector2(0.5, 1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_Post"]
+shader = ExtResource("5_post_shader")
+shader_parameter/scanline_density = 280.0
+shader_parameter/scanline_opacity = 0.05
+shader_parameter/vignette_intensity = 0.75
+shader_parameter/chromatic_aberration = 0.0012
+shader_parameter/glitch_intensity = 0.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBox_BarBg"]
+bg_color = Color(0.03, 0.055, 0.095, 0.96)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.14, 0.48, 0.7, 0.75)
+corner_radius_top_left = 6
+corner_radius_bottom_right = 6
+shadow_color = Color(0, 0, 0, 0.7)
+shadow_size = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBox_BarFill"]
+bg_color = Color(0.15, 0.88, 1, 0.95)
+corner_radius_top_left = 4
+corner_radius_bottom_right = 4
+shadow_color = Color(0.15, 0.85, 1, 0.45)
+shadow_size = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBox_Btn"]
+content_margin_left = 20.0
+content_margin_top = 8.0
+content_margin_right = 20.0
+content_margin_bottom = 8.0
+bg_color = Color(0.05, 0.09, 0.16, 0.95)
+border_width_left = 4
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.2, 0.85, 1, 0.8)
+corner_radius_top_left = 6
+corner_radius_bottom_right = 6
+
+[node name="LoadingScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_loading")
+
+[node name="DeepGradientBg" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_Bg")
+expand_mode = 1
+
+[node name="MenuBackground" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("4_menu_bg")
+
+[node name="TopAccentLine" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 2.0
+grow_horizontal = 2
+color = Color(0.18, 0.85, 1, 0.6)
+
+[node name="BottomAccentLine" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -2.0
+grow_horizontal = 2
+grow_vertical = 0
+color = Color(1, 0.28, 0.22, 0.6)
+
+[node name="MainContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 80
+theme_override_constants/margin_top = 60
+theme_override_constants/margin_right = 80
+theme_override_constants/margin_bottom = 60
+
+[node name="ContentBox" type="VBoxContainer" parent="MainContainer"]
+layout_mode = 2
+theme_override_constants/separation = 28
+alignment = 1
+
+[node name="DiagnosticTag" type="Label" parent="MainContainer/ContentBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.35, 0.72, 0.88, 0.75)
+theme_override_fonts/font = ExtResource("3_font_body")
+theme_override_font_sizes/font_size = 12
+text = "[ SYSTEM TRANSITION // SECURE DEPLOYMENT PROTOCOL ]"
+horizontal_alignment = 1
+
+[node name="MainTitle" type="Label" parent="MainContainer/ContentBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.2, 0.95, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0.15, 0.28, 0.9)
+theme_override_colors/font_outline_color = Color(0.015, 0.04, 0.08, 0.98)
+theme_override_constants/shadow_offset_x = 4
+theme_override_constants/shadow_offset_y = 4
+theme_override_constants/outline_size = 6
+theme_override_fonts/font = ExtResource("2_font_title")
+theme_override_font_sizes/font_size = 52
+text = "CORE BREACH"
+horizontal_alignment = 1
+
+[node name="DestinationLabel" type="Label" parent="MainContainer/ContentBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.25, 1)
+theme_override_colors/font_shadow_color = Color(0.35, 0.15, 0.05, 0.85)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_fonts/font = ExtResource("2_font_title")
+theme_override_font_sizes/font_size = 24
+text = "DESTINATION SECTOR: [ RESEARCH FACILITY ]"
+horizontal_alignment = 1
+
+[node name="StatusLabel" type="Label" parent="MainContainer/ContentBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.2, 0.9, 1, 1)
+theme_override_fonts/font = ExtResource("3_font_body")
+theme_override_font_sizes/font_size = 14
+text = "[ INITIALIZING SYSTEM BUS & MEMORY ALLOCATION ]"
+horizontal_alignment = 1
+
+[node name="ProgressContainer" type="HBoxContainer" parent="MainContainer/ContentBox"]
+custom_minimum_size = Vector2(620, 32)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="ProgressBar" type="ProgressBar" parent="MainContainer/ContentBox/ProgressContainer"]
+clip_contents = true
+custom_minimum_size = Vector2(520, 26)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_styles/background = SubResource("StyleBox_BarBg")
+theme_override_styles/fill = SubResource("StyleBox_BarFill")
+show_percentage = false
+
+[node name="SweepHighlight" type="ColorRect" parent="MainContainer/ContentBox/ProgressContainer/ProgressBar"]
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 45.0
+grow_vertical = 2
+mouse_filter = 2
+color = Color(1, 1, 1, 0.35)
+
+[node name="PercentageLabel" type="Label" parent="MainContainer/ContentBox/ProgressContainer"]
+custom_minimum_size = Vector2(65, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.25, 0.95, 1, 1)
+theme_override_fonts/font = ExtResource("3_font_body")
+theme_override_font_sizes/font_size = 16
+text = "00%"
+vertical_alignment = 1
+
+[node name="ErrorBox" type="VBoxContainer" parent="MainContainer/ContentBox"]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 12
+alignment = 1
+
+[node name="ErrorLabel" type="Label" parent="MainContainer/ContentBox/ErrorBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.25, 0.25, 1)
+theme_override_fonts/font = ExtResource("3_font_body")
+theme_override_font_sizes/font_size = 14
+text = "ERROR: Failed to load target arena."
+horizontal_alignment = 1
+
+[node name="Buttons" type="HBoxContainer" parent="MainContainer/ContentBox/ErrorBox"]
+layout_mode = 2
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="RetryButton" type="Button" parent="MainContainer/ContentBox/ErrorBox/Buttons"]
+custom_minimum_size = Vector2(140, 40)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_font_body")
+theme_override_font_sizes/font_size = 14
+theme_override_styles/normal = SubResource("StyleBox_Btn")
+text = "RETRY LOAD"
+
+[node name="BackButton" type="Button" parent="MainContainer/ContentBox/ErrorBox/Buttons"]
+custom_minimum_size = Vector2(140, 40)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_font_body")
+theme_override_font_sizes/font_size = 14
+theme_override_styles/normal = SubResource("StyleBox_Btn")
+text = "RETURN TO MENU"
+
+[node name="PostProcessOverlay" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_Post")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="FadeOverlay" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0)

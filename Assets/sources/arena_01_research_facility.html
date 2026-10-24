@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>CARBONX: Chaos Control — Research Facility 3D</title>
+<style>
+:root{--bg:#070b12;--fg:#e6eef7;--ac:#1aa0ff;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html,body{height:100%;margin:0;background:var(--bg);color:var(--fg);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;overflow:hidden}
+#v{position:fixed;inset:0}
+#bar{position:fixed;left:0;right:0;bottom:env(safe-area-inset-bottom,0px);display:flex;gap:6px;flex-wrap:wrap;justify-content:center;padding:10px}
+button{background:#121a26;color:var(--fg);border:1px solid #2c3b50;border-radius:8px;padding:7px 11px;font-size:13px;cursor:pointer}
+button:hover,button.on{border-color:var(--ac);background:#0e2840}
+h1{position:fixed;top:calc(10px + env(safe-area-inset-top,0px));left:14px;margin:0;font-size:15px;letter-spacing:.12em;text-transform:uppercase}
+h1 span{color:#ff6a1a}
+small{position:fixed;top:calc(32px + env(safe-area-inset-top,0px));left:14px;opacity:.6;font-size:12px}
+#lg{position:fixed;top:calc(10px + env(safe-area-inset-top,0px));right:12px;font-size:12px;line-height:1.7;background:#0a111bcc;border:1px solid #22324a;border-radius:8px;padding:8px 10px}
+#lg i{display:inline-block;width:14px;height:4px;margin-right:7px;vertical-align:middle}
+@media(max-width:600px){#lg{display:none}}
+</style></head><body>
+<div id="v"></div>
+<h1>CarbonX <span>Arena 01</span></h1><small>Procedural 3D rebuild · drag to orbit · scroll to zoom</small>
+<div id="lg"><i style="background:#1aa0ff"></i>Runner spawn / objective<br><i style="background:#ff2a2a"></i>Saboteur spawn / lasers<br><i style="background:#ffc21a"></i>Floor traps / hazards</div>
+<div id="bar"></div>
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/controls/OrbitControls.js"></script>
+<script>
+const T=THREE,PI=Math.PI,s=.0787,X=p=>(p-707)*s,Z=p=>(p-490)*s,H=4.6,TH=.6;
+const mk=(c,r,m,o)=>new T.MeshStandardMaterial(Object.assign({color:c,roughness:r,metalness:m},o||{}));
+const em=(c,i)=>mk(c,.4,0,{emissive:c,emissiveIntensity:i||1.2});
+const M={side:mk(0x1b2028,.6,.5),top:mk(0x46536a,.5,.4,{emissive:0x0a2a40}),gun:mk(0x2c333d,.45,.8),dk:mk(0x14181e,.7,.4),al:mk(0x7d8794,.35,.85),
+cy:em(0x1aa0ff,1.4),red:em(0xff2a2a,2),amb:em(0xffb21a,1),grn:mk(0x2c6a34,.9,0),glass:mk(0x56c8ff,.1,.2,{transparent:true,opacity:.28,emissive:0x0a5a90,emissiveIntensity:.5}),
+holo:mk(0x1aa0ff,.3,0,{transparent:true,opacity:.55,emissive:0x1aa0ff,emissiveIntensity:1.4}),holr:mk(0xff2a2a,.3,0,{transparent:true,opacity:.55,emissive:0xff2a2a,emissiveIntensity:1.4})};
+const WM=[M.side,M.side,M.top,M.side,M.side,M.side];
+const g=new T.Group();
+function box(w,h,d,m,x,y,z,ry){const o=new T.Mesh(new T.BoxGeometry(w,h,d),m);o.position.set(x,y,z);if(ry)o.rotation.y=ry;g.add(o);return o}
+function cyl(r,h,m,x,y,z,n){const o=new T.Mesh(new T.CylinderGeometry(r,r,h,n||28),m);o.position.set(x,y,z);g.add(o);return o}
+function seg(x1,y1,x2,y2){const ax=X(x1),az=Z(y1),bx=X(x2),bz=Z(y2),l=Math.hypot(bx-ax,bz-az);if(l<.05)return;
+ box(l+TH*.9,H,TH,WM,(ax+bx)/2,H/2,(az+bz)/2,-Math.atan2(bz-az,bx-ax)).castShadow=true}
+function post(px,py,hor){box(.7,H+.2,.7,M.gun,X(px),(H+.2)/2,Z(py));box(.16,2.2,.16,M.cy,X(px),1.6,Z(py)+.35)}
+function wl(x1,y1,x2,y2,gs){gs=(gs||[]).slice().sort((a,b)=>a[0]-b[0]);const hor=y1==y2;let cur=hor?x1:y1;const end=hor?x2:y2;
+ gs.forEach(([c,w])=>{const a=c-w/2,b=c+w/2;hor?seg(cur,y1,a,y1):seg(x1,cur,x1,a);cur=b;
+  post(hor?a:x1,hor?y1:a);post(hor?b:x1,hor?y1:b);
+  const hl=w*s;hor?box(hl,.6,TH,M.gun,X(c),H-.3,Z(y1)):box(TH,.6,hl,M.gun,X(x1),H-.3,Z(c))});
+ hor?seg(cur,y1,end,y1):seg(x1,cur,x1,end)}
+function room(x1,y1,x2,y2,d){d=d||{};wl(x1,y1,x2,y1,d.N);wl(x1,y2,x2,y2,d.S);wl(x1,y1,x1,y2,d.W);wl(x2,y1,x2,y2,d.E)}
+// ---- floor
+const cv=document.createElement('canvas');cv.width=cv.height=256;const c=cv.getContext('2d');c.fillStyle='#39424f';c.fillRect(0,0,256,256);
+c.strokeStyle='#1a2029';c.lineWidth=6;c.strokeRect(0,0,256,256);c.strokeStyle='#4a5565';c.lineWidth=2;c.strokeRect(10,10,236,236);
+for(let i=0;i<140;i++){c.fillStyle='rgba(0,0,0,'+Math.random()*.08+')';c.fillRect(Math.random()*256,Math.random()*256,30,20)}
+const ft=new T.CanvasTexture(cv);ft.wrapS=ft.wrapT=T.RepeatWrapping;ft.repeat.set(99/3,66/3);ft.anisotropy=8;
+const fl=new T.Mesh(new T.PlaneGeometry(99,66),mk(0xffffff,.55,.3,{map:ft}));fl.rotation.x=-PI/2;fl.position.set(X(670),0,Z(505));fl.receiveShadow=true;g.add(fl);
+const hc=document.createElement('canvas');hc.width=hc.height=128;const h2=hc.getContext('2d');h2.fillStyle='#ffc21a';h2.fillRect(0,0,128,128);h2.fillStyle='#111';
+for(let i=-4;i<8;i++){h2.beginPath();h2.moveTo(i*24,0);h2.lineTo(i*24+12,0);h2.lineTo(i*24+12+128,128);h2.lineTo(i*24+128,128);h2.fill()}
+const hz=mk(0xffffff,.6,.1,{map:new T.CanvasTexture(hc)});
+function trap(px,py,w,d){const o=new T.Mesh(new T.PlaneGeometry(w,d),hz);o.rotation.x=-PI/2;o.position.set(X(px),.02,Z(py));g.add(o)}
+[[470,415,3,1.6],[1190,490,4,1.6],[490,622,1.6,3],[1100,395,3,1.4],[210,700,4,1.4],[1040,540,1.6,3]].forEach(a=>trap(...a));
+// ---- architecture
+room(35,90,1300,920);
+room(40,110,250,300,{S:[[215,70]]});
+room(260,95,600,320,{S:[[520,120]],E:[[250,80]]});
+room(840,100,1100,320,{W:[[250,80]],S:[[900,100]]});
+room(1130,120,1290,540,{W:[[480,90]]});
+room(90,330,260,640,{E:[[490,100]]});
+room(340,330,465,440,{S:[[400,60]]});
+room(340,545,465,645,{N:[[400,60]]});
+room(60,655,470,860,{N:[[300,150]]});
+room(480,700,600,880,{E:[[800,80]]});
+room(830,660,950,880,{W:[[800,80]]});
+room(960,570,1100,870,{N:[[1030,100]]});
+room(1110,640,1290,880,{N:[[1200,100]]});
+room(960,330,1120,440,{S:[[1040,100]]});
+// octagon
+const cx=707,cy=490,Rv=189;
+for(let k=0;k<8;k++){const a1=(22.5+45*k)*PI/180,a2=(22.5+45*(k+1))*PI/180;
+ const ax=cx+Rv*Math.cos(a1),ay=cy+Rv*Math.sin(a1),bx=cx+Rv*Math.cos(a2),by=cy+Rv*Math.sin(a2);
+ if(k%2){const t=.5,w=100/145/2,mx=ax+(bx-ax)*t,my=ay+(by-ay)*t,u=(bx-ax),v=(by-ay);
+  seg(ax,ay,mx-u*w,my-v*w);seg(mx+u*w,my+v*w,bx,by);post(mx-u*w,my-v*w);post(mx+u*w,my+v*w)}else seg(ax,ay,bx,by)}
+// objective
+const oct=cyl(9.4,.5,M.dk,0,.25,0,8);oct.rotation.y=PI/8;
+[13,11].forEach(r=>{const o=new T.Mesh(new T.RingGeometry(r-.12,r,8),M.cy);o.rotation.x=-PI/2;o.rotation.z=PI/8;o.position.y=.03;g.add(o)});
+const rg=new T.Mesh(new T.TorusGeometry(7.6,.12,8,8),M.cy);rg.rotation.x=PI/2;rg.rotation.z=PI/8;rg.position.y=.6;g.add(rg);
+cyl(3.4,.9,M.gun,0,.95,0,6);cyl(2.4,1.8,M.cy,0,1.4,0,6);
+const sph=new T.Mesh(new T.SphereGeometry(1.3,24,16),M.holo);sph.position.y=3.4;g.add(sph);
+const cl=new T.PointLight(0x1aa0ff,2.2,45,2);cl.position.y=4;g.add(cl);
+[[0,-9.5],[0,9.5]].forEach(p=>{box(8,1.1,1.2,M.gun,p[0],.6,p[1]);box(7,.6,.5,M.cy,p[0],1.25,p[1]+(p[1]<0?.2:-.2))});
+[[-9.5,0],[9.5,0]].forEach(p=>{box(1.2,1.1,8,M.gun,p[0],.6,p[1]);box(.5,.6,7,M.cy,p[0]+(p[0]<0?.2:-.2),1.25,p[1])});
+// ---- props
+function vessel(px,py,r,h,m){const x=X(px),z=Z(py);cyl(r*1.15,.5,M.gun,x,.25,z);cyl(r*1.15,.5,M.gun,x,h+.5,z);cyl(r*.55,h,m||M.cy,x,h/2+.5,z);cyl(r,h,M.glass,x,h/2+.5,z)}
+[[515,165,.9,3.6],[1225,240,1.6,3.6],[1225,295,1.6,3.6],[1225,350,1.6,3.6],[140,730,1.5,3],[140,778,1.5,3],[395,590,.9,3.2,M.amb],[425,590,.9,3.2,M.amb],[420,385,.8,3.5]].forEach(a=>vessel(...a));
+[[380,775,3.2],[440,768,2.4]].forEach(([px,py,r])=>{const x=X(px),z=Z(py);cyl(r,.8,M.gun,x,.4,z,16);cyl(r*.8,2.6,M.glass,x,2,z);cyl(r*.45,2.4,M.cy,x,2,z);cyl(r*.9,.5,M.al,x,3.4,z,16);
+ const t=new T.Mesh(new T.TorusGeometry(r*.85,.12,8,28),M.cy);t.rotation.x=PI/2;t.position.set(x,.9,z);g.add(t)});
+function cons(px,py,w,d,sc){const x=X(px),z=Z(py),W=w*s,D=d*s;box(W,1,D,M.gun,x,.5,z);box(W*.8,.1,D*.7,sc?M.cy:M.dk,x,1.06,z)}
+[[330,185,70,25,1],[300,250,60,20],[900,200,60,60],[930,270,140,22,1],[1000,150,120,20,1],[1170,170,100,25,1],[1010,600,90,30,1],[1010,820,80,25,1],[880,780,25,80,1],[850,700,40,20],[540,740,25,60,1],[130,610,110,24,1],[320,830,120,20,1],[200,830,80,20],[470,340,30,50],[1180,570,60,30]].forEach(a=>cons(...a));
+[[230,610],[260,770],[1250,500],[600,930],[565,555],[908,590]].forEach(([px,py])=>{});
+function rack(px,py){const x=X(px),z=Z(py);box(1.1,2.5,.8,M.dk,x,1.25,z);box(.9,.1,.05,M.cy,x,1.8,z+.43);box(.9,.1,.05,M.amb,x,1.4,z+.43)}
+[[1070,180],[1085,215],[975,590],[1000,640],[565,620],[565,665],[110,360],[110,400]].forEach(a=>rack(...a));
+[[600,150],[825,160],[830,295],[790,820],[600,290],[800,880],[570,880]].forEach(([px,py])=>{cyl(.7,.5,M.gun,X(px),.25,Z(py),12);const f=new T.Mesh(new T.SphereGeometry(.8,10,8),M.grn);f.position.set(X(px),1.1,Z(py));g.add(f)});
+// ---- security
+function laser(x1,y1,x2,y2){const ax=X(x1),az=Z(y1),bx=X(x2),bz=Z(y2),l=Math.hypot(bx-ax,bz-az),a=-Math.atan2(bz-az,bx-ax);
+ [.5,1.2,1.9].forEach(y=>box(l,.07,.07,M.red,(ax+bx)/2,y,(az+bz)/2,a));
+ const gl=new T.Mesh(new T.PlaneGeometry(l,1.8),mk(0xff2a2a,1,0,{transparent:true,opacity:.14,emissive:0xff2a2a,emissiveIntensity:1,side:T.DoubleSide}));gl.position.set((ax+bx)/2,1.2,(az+bz)/2);gl.rotation.y=a;g.add(gl);
+ [[ax,az],[bx,bz]].forEach(p=>{box(.5,2.4,.5,M.gun,p[0],1.2,p[1]);box(.25,.25,.25,M.red,p[0],2.5,p[1])});
+ const L=new T.PointLight(0xff2a2a,1.6,14,2);L.position.set((ax+bx)/2,1.5,(az+bz)/2);g.add(L)}
+laser(662,210,762,210);laser(662,750,762,750);laser(250,448,250,532);laser(350,452,350,528);laser(1046,460,1046,526);
+// spawns
+function pad(px,py,r,m,hm,ptc){const x=X(px),z=Z(py),R=r*s;const rg=new T.Mesh(new T.RingGeometry(R*.85,R,48),m);rg.rotation.x=-PI/2;rg.position.set(x,.04,z);g.add(rg);
+ const d=new T.Mesh(new T.CircleGeometry(R*.85,48),hm);d.rotation.x=-PI/2;d.position.set(x,.03,z);d.material=hm;g.add(d);
+ const L=new T.PointLight(ptc,2,22,2);L.position.set(x,3,z);g.add(L);return [x,z]}
+let [rx,rz]=pad(173,228,60,M.cy,mk(0x1aa0ff,.5,0,{transparent:true,opacity:.25,emissive:0x1aa0ff,emissiveIntensity:.6}),0x1aa0ff);
+const fg=new T.Group();fg.position.set(rx,1.2,rz);g.add(fg);
+const hb=new T.Mesh(new T.CapsuleGeometry(.3,.8,4,10),M.holo);fg.add(hb);const hh=new T.Mesh(new T.SphereGeometry(.24,12,10),M.holo);hh.position.y=.85;fg.add(hh);fg.rotation.z=-.25;
+let [sx,sz]=pad(1195,755,60,M.red,mk(0xff2a2a,.5,0,{transparent:true,opacity:.25,emissive:0xff2a2a,emissiveIntensity:.6}),0xff2a2a);
+const wr=new T.Mesh(new T.ConeGeometry(.7,1.4,3),M.holr);wr.position.set(sx,1.4,sz);g.add(wr);
+g.traverse(o=>{if(o.isMesh){o.castShadow=true;o.receiveShadow=true}});
+// ---- scene
+const el=document.getElementById('v'),R=new T.WebGLRenderer({antialias:true});R.setPixelRatio(Math.min(devicePixelRatio,2));R.shadowMap.enabled=true;el.appendChild(R.domElement);
+const sc=new T.Scene();sc.background=new T.Color(0x070b12);
+const cam=new T.PerspectiveCamera(24,1,.5,400);
+sc.add(new T.HemisphereLight(0xaac4e8,0x10141c,.75));
+const key=new T.DirectionalLight(0xcfe0ff,1.1);key.position.set(14,60,10);key.castShadow=true;key.shadow.mapSize.set(2048,2048);
+Object.assign(key.shadow.camera,{left:-58,right:58,top:42,bottom:-42,near:1,far:140});key.shadow.bias=-.0005;sc.add(key);
+sc.add(g);
+const ctl=new T.OrbitControls(cam,R.domElement);ctl.enableDamping=true;ctl.maxPolarAngle=PI/2-.02;ctl.maxDistance=200;
+let goal=null,auto=false;
+function topPos(){const t=Math.tan(cam.fov*PI/360),a=cam.aspect;return Math.max(68/(2*t),102/(2*t*a))*1.04}
+const V={'Top-down':()=>[[0,topPos(),.01],[0,0,0]],'3/4 view':()=>[[-45,42,62],[0,0,0]],'Objective':()=>[[0,14,20],[0,1.5,0]],
+'Runner spawn':()=>[[X(173)+10,16,Z(228)+22],[X(173),1,Z(228)]],'Saboteur spawn':()=>[[X(1195)-10,16,Z(755)+22],[X(1195),1,Z(755)]],'North gate':()=>[[0,10,Z(330)],[0,1.5,Z(150)]],'East wing':()=>[[X(1000)-18,18,Z(300)+26],[X(1180),1,Z(300)]]};
+function go(n){const v=V[n]();goal={p:new T.Vector3(...v[0]),t:new T.Vector3(...v[1])};auto=false;ab.classList.remove('on')}
+const bar=document.getElementById('bar');
+Object.keys(V).forEach(n=>{const b=document.createElement('button');b.textContent=n;b.onclick=()=>go(n);bar.appendChild(b)});
+const ab=document.createElement('button');ab.textContent='Orbit';ab.onclick=()=>{auto=!auto;ab.classList.toggle('on',auto);goal=null};bar.appendChild(ab);
+let wire=false;const wb=document.createElement('button');wb.textContent='Wireframe';wb.onclick=()=>{wire=!wire;wb.classList.toggle('on',wire);g.traverse(o=>{if(o.isMesh)(Array.isArray(o.material)?o.material:[o.material]).forEach(m=>m.wireframe=wire)})};bar.appendChild(wb);
+function rs(){R.setSize(innerWidth,innerHeight);cam.aspect=innerWidth/innerHeight;cam.updateProjectionMatrix()}
+addEventListener('resize',()=>{rs();if(!goal&&!auto&&ctl.getPolarAngle()<.05)go('Top-down')});rs();
+{const v=V['Top-down']();cam.position.set(...v[0]);ctl.target.set(...v[1])}
+ctl.addEventListener('start',()=>{goal=null;auto=false;ab.classList.remove('on')});
+(function loop(t){requestAnimationFrame(loop);
+ if(goal){cam.position.lerp(goal.p,.07);ctl.target.lerp(goal.t,.07);if(cam.position.distanceTo(goal.p)<.05)goal=null}
+ else if(auto){const a=.0025,p=cam.position,x=p.x*Math.cos(a)-p.z*Math.sin(a),z=p.x*Math.sin(a)+p.z*Math.cos(a);p.x=x;p.z=z}
+ fg.rotation.y+=.02;wr.rotation.y+=.02;fg.position.y=1.2+Math.sin(t/500)*.08;
+ ctl.update();R.render(sc,cam)})();
+</script></body></html>

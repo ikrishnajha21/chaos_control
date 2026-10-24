@@ -1,0 +1,28 @@
+[gd_scene load_steps=5 format=3 uid="uid://cg8k2m7w1n5xr"]
+
+[ext_resource type="Script" path="res://scripts/weapons/pre_blast_charge_fx.gd" id="1_charge"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ring"]
+transparency = 1
+shading_mode = 0
+albedo_color = Color(1, 0.2, 0.1, 0.8)
+
+[sub_resource type="TorusMesh" id="TorusMesh_warning"]
+material = SubResource("StandardMaterial3D_ring")
+inner_radius = 0.55
+outer_radius = 0.65
+rings = 16
+ring_segments = 12
+
+[node name="PreBlastChargeFX" type="Node3D"]
+script = ExtResource("1_charge")
+
+[node name="WarningRing" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
+mesh = SubResource("TorusMesh_warning")
+
+[node name="ChargeLight" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0, 0)
+light_color = Color(1, 0.15, 0.1, 1)
+light_energy = 3.0
+omni_range = 4.5

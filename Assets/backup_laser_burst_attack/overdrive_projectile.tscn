@@ -1,0 +1,84 @@
+[gd_scene load_steps=8 format=3 uid="uid://c6xk8w3q4m1np"]
+
+[ext_resource type="Script" path="res://scripts/weapons/overdrive_projectile.gd" id="1_proj"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_area"]
+radius = 0.45
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_core"]
+shading_mode = 0
+albedo_color = Color(1, 0.25, 0.15, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_bolt"]
+material = SubResource("StandardMaterial3D_core")
+radius = 0.12
+height = 1.0
+radial_segments = 8
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_spark"]
+shading_mode = 0
+albedo_color = Color(1, 0.45, 0.15, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_spark"]
+material = SubResource("StandardMaterial3D_spark")
+radius = 0.04
+height = 0.08
+radial_segments = 4
+
+[sub_resource type="SphereMesh" id="SphereMesh_impact"]
+material = SubResource("StandardMaterial3D_core")
+radius = 0.06
+height = 0.12
+radial_segments = 6
+
+[node name="OverdriveProjectile" type="Area3D"]
+collision_layer = 16
+collision_mask = 15
+script = ExtResource("1_proj")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_area")
+
+[node name="VisualMesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0)
+mesh = SubResource("CapsuleMesh_bolt")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+light_color = Color(1, 0.22, 0.1, 1)
+light_energy = 3.5
+omni_range = 6.0
+
+[node name="RayCast3D" type="RayCast3D" parent="."]
+target_position = Vector3(0, 0, -1.5)
+collision_mask = 15
+collide_with_areas = true
+collide_with_bodies = true
+
+[node name="TrailParticles" type="CPUParticles3D" parent="."]
+amount = 18
+lifetime = 0.35
+emission_shape = 1
+emission_sphere_radius = 0.08
+gravity = Vector3(0, 0, 0)
+initial_velocity_min = 0.5
+initial_velocity_max = 1.5
+scale_amount_min = 0.6
+scale_amount_max = 1.2
+mesh = SubResource("SphereMesh_spark")
+
+[node name="ImpactParticles" type="CPUParticles3D" parent="."]
+emitting = false
+amount = 22
+lifetime = 0.4
+one_shot = true
+explosiveness = 0.95
+emission_shape = 1
+emission_sphere_radius = 0.2
+direction = Vector3(0, 1, 0)
+spread = 180.0
+gravity = Vector3(0, 2, 0)
+initial_velocity_min = 3.0
+initial_velocity_max = 6.0
+scale_amount_min = 0.5
+scale_amount_max = 1.4
+mesh = SubResource("SphereMesh_impact")

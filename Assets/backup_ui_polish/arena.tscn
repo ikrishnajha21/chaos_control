@@ -1,0 +1,203 @@
+[gd_scene load_steps=2 format=3 uid="uid://b8y9c1p3x7j5m"]
+
+[ext_resource type="Script" path="res://scripts/arena_select.gd" id="1_arena_select"]
+
+[node name="ArenaSelect" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_arena_select")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.04, 0.05, 0.08, 1)
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_top = 28
+theme_override_constants/margin_right = 32
+theme_override_constants/margin_bottom = 28
+
+[node name="VBox" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="HeaderBox" type="VBoxContainer" parent="MarginContainer/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 6
+alignment = 1
+
+[node name="Title" type="Label" parent="MarginContainer/VBox/HeaderBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.15, 0.85, 1, 1)
+theme_override_font_sizes/font_size = 32
+text = "CHAOS CONTROL // SYSTEM OVERRIDE"
+horizontal_alignment = 1
+
+[node name="Subtitle" type="Label" parent="MarginContainer/VBox/HeaderBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.8, 0.85, 0.9, 0.8)
+theme_override_font_sizes/font_size = 18
+text = "LOCAL 1V1 ARCADE — SELECT COMBAT ARENA"
+horizontal_alignment = 1
+
+[node name="ArenaList" type="HBoxContainer" parent="MarginContainer/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 24
+alignment = 1
+
+[node name="CardTraining" type="PanelContainer" parent="MarginContainer/VBox/ArenaList"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VBox" type="VBoxContainer" parent="MarginContainer/VBox/ArenaList/CardTraining"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="CardTitle" type="Label" parent="MarginContainer/VBox/ArenaList/CardTraining/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.2, 0.85, 1, 1)
+theme_override_font_sizes/font_size = 22
+text = "1. TRAINING FACILITY"
+horizontal_alignment = 1
+
+[node name="CardTag" type="Label" parent="MarginContainer/VBox/ArenaList/CardTraining/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.4, 1, 0.7, 0.8)
+theme_override_font_sizes/font_size = 14
+text = "[ BALANCED PROVING GROUND ]"
+horizontal_alignment = 1
+
+[node name="CardDesc" type="Label" parent="MarginContainer/VBox/ArenaList/CardTraining/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(0.8, 0.85, 0.9, 0.9)
+theme_override_font_sizes/font_size = 15
+text = "• Industrial testing facility with metallic platforms, tactical pillars, and balanced corridors.
+
+• Standard competitive proving ground.
+
+• Full access to 3 control terminals and extraction gate."
+autowrap_mode = 2
+
+[node name="SelectButton" type="Button" parent="MarginContainer/VBox/ArenaList/CardTraining/VBox"]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+theme_override_font_sizes/font_size = 17
+text = "ENTER TRAINING [ 1 ]"
+
+[node name="CardGravity" type="PanelContainer" parent="MarginContainer/VBox/ArenaList"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VBox" type="VBoxContainer" parent="MarginContainer/VBox/ArenaList/CardGravity"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="CardTitle" type="Label" parent="MarginContainer/VBox/ArenaList/CardGravity/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.3, 0.7, 1, 1)
+theme_override_font_sizes/font_size = 22
+text = "2. GRAVITY CORE"
+horizontal_alignment = 1
+
+[node name="CardTag" type="Label" parent="MarginContainer/VBox/ArenaList/CardGravity/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.75, 0.2, 0.9)
+theme_override_font_sizes/font_size = 14
+text = "[ ELEVATED & EMP BRIDGE ]"
+horizontal_alignment = 1
+
+[node name="CardDesc" type="Label" parent="MarginContainer/VBox/ArenaList/CardGravity/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(0.8, 0.85, 0.9, 0.9)
+theme_override_font_sizes/font_size = 15
+text = "• Split arena with North & South platforms over an energy chasm.
+
+• Central energy bridge can be destabilized by Saboteur EMP shockwaves.
+
+• East & West catwalks remain permanently solid and safe."
+autowrap_mode = 2
+
+[node name="SelectButton" type="Button" parent="MarginContainer/VBox/ArenaList/CardGravity/VBox"]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+theme_override_font_sizes/font_size = 17
+text = "ENTER GRAVITY CORE [ 2 ]"
+
+[node name="CardReactor" type="PanelContainer" parent="MarginContainer/VBox/ArenaList"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VBox" type="VBoxContainer" parent="MarginContainer/VBox/ArenaList/CardReactor"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="CardTitle" type="Label" parent="MarginContainer/VBox/ArenaList/CardReactor/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.35, 0.2, 1)
+theme_override_font_sizes/font_size = 22
+text = "3. NEON REACTOR"
+horizontal_alignment = 1
+
+[node name="CardTag" type="Label" parent="MarginContainer/VBox/ArenaList/CardReactor/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.4, 0.3, 0.9)
+theme_override_font_sizes/font_size = 14
+text = "[ CORE PURGE & FLANK ROUTES ]"
+horizontal_alignment = 1
+
+[node name="CardDesc" type="Label" parent="MarginContainer/VBox/ArenaList/CardReactor/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(0.8, 0.85, 0.9, 0.9)
+theme_override_font_sizes/font_size = 15
+text = "• Industrial reactor with central energy core and hazard beacon lights.
+
+• Timed periodic plasma vents flood the center chamber (3s warning).
+
+• East & West conduits behind heavy blast shields provide 100% safe routes."
+autowrap_mode = 2
+
+[node name="SelectButton" type="Button" parent="MarginContainer/VBox/ArenaList/CardReactor/VBox"]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+theme_override_font_sizes/font_size = 17
+text = "ENTER NEON REACTOR [ 3 ]"
+
+[node name="FooterInfo" type="HBoxContainer" parent="MarginContainer/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 30
+alignment = 1
+
+[node name="P1Info" type="Label" parent="MarginContainer/VBox/FooterInfo"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.2, 0.8, 1, 1)
+text = "Player 1: [W] [A] [S] [D] + [E]"
+
+[node name="MatchRule" type="Label" parent="MarginContainer/VBox/FooterInfo"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.7, 0.7, 0.8)
+text = "Best-of-3 Match | Automatic Role Switching | Select with Mouse or [1, 2, 3]"
+
+[node name="P2Info" type="Label" parent="MarginContainer/VBox/FooterInfo"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.4, 0.2, 1)
+text = "Player 2: [↑] [←] [↓] [→] + [SPACE]"

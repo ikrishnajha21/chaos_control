@@ -1,0 +1,298 @@
+[gd_scene load_steps=10 format=3 uid="uid://b8y9c1p3x7j5m"]
+
+[ext_resource type="Script" path="res://scripts/arena_select.gd" id="1_arena_select"]
+[ext_resource type="FontFile" uid="uid://dktl2nn0ryxm" path="res://assets/fonts/AgencyFB-Bold.ttf" id="2_font_title"]
+[ext_resource type="FontFile" uid="uid://bb5h5sn5u8ghj" path="res://assets/fonts/Bahnschrift.ttf" id="3_font_body"]
+
+[sub_resource type="Gradient" id="Gradient_Bg"]
+offsets = PackedFloat32Array(0, 0.5, 1)
+colors = PackedColorArray(0.04, 0.065, 0.1, 1, 0.025, 0.04, 0.065, 1, 0.015, 0.02, 0.035, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_Bg"]
+gradient = SubResource("Gradient_Bg")
+width = 1280
+height = 720
+fill = 1
+fill_from = Vector2(0.5, 0.3)
+fill_to = Vector2(0.5, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBox_BtnNormal"]
+content_margin_left = 16.0
+content_margin_top = 10.0
+content_margin_right = 16.0
+content_margin_bottom = 10.0
+bg_color = Color(0.06, 0.09, 0.14, 0.9)
+border_width_left = 3
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.15, 0.5, 0.75, 0.6)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBox_BtnHover"]
+content_margin_left = 18.0
+content_margin_top = 10.0
+content_margin_right = 14.0
+content_margin_bottom = 10.0
+bg_color = Color(0.1, 0.16, 0.26, 0.96)
+border_width_left = 6
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.2, 0.95, 1, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+shadow_color = Color(0.1, 0.8, 1, 0.25)
+shadow_size = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBox_Panel"]
+content_margin_left = 22.0
+content_margin_top = 18.0
+content_margin_right = 22.0
+content_margin_bottom = 18.0
+bg_color = Color(0.035, 0.05, 0.085, 0.96)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.16, 0.55, 0.8, 0.75)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+shadow_color = Color(0, 0, 0, 0.85)
+shadow_size = 14
+
+[sub_resource type="Theme" id="Theme_Cyber"]
+default_font = ExtResource("3_font_body")
+default_font_size = 15
+Button/fonts/font = ExtResource("3_font_body")
+Button/styles/disabled = SubResource("StyleBox_BtnNormal")
+Button/styles/focus = SubResource("StyleBox_BtnHover")
+Button/styles/hover = SubResource("StyleBox_BtnHover")
+Button/styles/normal = SubResource("StyleBox_BtnNormal")
+PanelContainer/styles/panel = SubResource("StyleBox_Panel")
+
+[node name="ArenaSelect" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_Cyber")
+script = ExtResource("1_arena_select")
+
+[node name="Background" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_Bg")
+expand_mode = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 36
+theme_override_constants/margin_top = 26
+theme_override_constants/margin_right = 36
+theme_override_constants/margin_bottom = 26
+
+[node name="VBox" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 18
+alignment = 1
+
+[node name="HeaderBox" type="VBoxContainer" parent="MarginContainer/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 4
+alignment = 1
+
+[node name="Title" type="Label" parent="MarginContainer/VBox/HeaderBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.15, 0.92, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0.18, 0.3, 0.85)
+theme_override_constants/shadow_offset_x = 3
+theme_override_constants/shadow_offset_y = 3
+theme_override_fonts/font = ExtResource("2_font_title")
+theme_override_font_sizes/font_size = 40
+text = "CHAOS CONTROL // SYSTEM OVERRIDE"
+horizontal_alignment = 1
+
+[node name="Subtitle" type="Label" parent="MarginContainer/VBox/HeaderBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.32, 0.22, 0.95)
+theme_override_fonts/font = ExtResource("3_font_body")
+theme_override_font_sizes/font_size = 16
+text = "LOCAL 1V1 ARCADE — SELECT COMBAT SECTOR"
+horizontal_alignment = 1
+
+[node name="ArenaList" type="HBoxContainer" parent="MarginContainer/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="CardTraining" type="PanelContainer" parent="MarginContainer/VBox/ArenaList"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VBox" type="VBoxContainer" parent="MarginContainer/VBox/ArenaList/CardTraining"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="CardTitle" type="Label" parent="MarginContainer/VBox/ArenaList/CardTraining/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.2, 0.88, 1, 1)
+theme_override_fonts/font = ExtResource("2_font_title")
+theme_override_font_sizes/font_size = 24
+text = "1. RESEARCH FACILITY"
+horizontal_alignment = 1
+
+[node name="CardTag" type="Label" parent="MarginContainer/VBox/ArenaList/CardTraining/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.3, 1, 0.7, 0.85)
+theme_override_fonts/font = ExtResource("3_font_body")
+theme_override_font_sizes/font_size = 13
+text = "[ BIO-CONTAINMENT & LABS ]"
+horizontal_alignment = 1
+
+[node name="CardDesc" type="Label" parent="MarginContainer/VBox/ArenaList/CardTraining/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(0.8, 0.85, 0.92, 0.9)
+theme_override_fonts/font = ExtResource("3_font_body")
+theme_override_font_sizes/font_size = 14
+text = "• 14 partitioned research laboratories with metallic walkways and server banks.
+• Central octagon hub & rotating hologram core.
+• Dynamic security laser grid & blast barriers."
+autowrap_mode = 2
+
+[node name="SelectButton" type="Button" parent="MarginContainer/VBox/ArenaList/CardTraining/VBox"]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_font_body")
+theme_override_font_sizes/font_size = 16
+text = "ENTER FACILITY [ 1 ]"
+
+[node name="CardGravity" type="PanelContainer" parent="MarginContainer/VBox/ArenaList"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VBox" type="VBoxContainer" parent="MarginContainer/VBox/ArenaList/CardGravity"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="CardTitle" type="Label" parent="MarginContainer/VBox/ArenaList/CardGravity/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.35, 0.75, 1, 1)
+theme_override_fonts/font = ExtResource("2_font_title")
+theme_override_font_sizes/font_size = 24
+text = "2. POWER CORE"
+horizontal_alignment = 1
+
+[node name="CardTag" type="Label" parent="MarginContainer/VBox/ArenaList/CardGravity/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.75, 0.2, 0.9)
+theme_override_fonts/font = ExtResource("3_font_body")
+theme_override_font_sizes/font_size = 13
+text = "[ HIGH-OUTPUT REACTOR ]"
+horizontal_alignment = 1
+
+[node name="CardDesc" type="Label" parent="MarginContainer/VBox/ArenaList/CardGravity/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(0.8, 0.85, 0.92, 0.9)
+theme_override_fonts/font = ExtResource("3_font_body")
+theme_override_font_sizes/font_size = 14
+text = "• Split arena with North & South platforms over a deep gravity chasm.
+• Central energy bridge destabilized by Saboteur EMP shockwaves.
+• East & West catwalks provide reliable solid bypass routes."
+autowrap_mode = 2
+
+[node name="SelectButton" type="Button" parent="MarginContainer/VBox/ArenaList/CardGravity/VBox"]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_font_body")
+theme_override_font_sizes/font_size = 16
+text = "ENTER POWER CORE [ 2 ]"
+
+[node name="CardReactor" type="PanelContainer" parent="MarginContainer/VBox/ArenaList"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VBox" type="VBoxContainer" parent="MarginContainer/VBox/ArenaList/CardReactor"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="CardTitle" type="Label" parent="MarginContainer/VBox/ArenaList/CardReactor/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.35, 0.2, 1)
+theme_override_fonts/font = ExtResource("2_font_title")
+theme_override_font_sizes/font_size = 24
+text = "3. UNDERGROUND COMPLEX"
+horizontal_alignment = 1
+
+[node name="CardTag" type="Label" parent="MarginContainer/VBox/ArenaList/CardReactor/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.45, 0.3, 0.9)
+theme_override_fonts/font = ExtResource("3_font_body")
+theme_override_font_sizes/font_size = 13
+text = "[ FORTIFIED BUNKER NETWORK ]"
+horizontal_alignment = 1
+
+[node name="CardDesc" type="Label" parent="MarginContainer/VBox/ArenaList/CardReactor/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(0.8, 0.85, 0.92, 0.9)
+theme_override_fonts/font = ExtResource("3_font_body")
+theme_override_font_sizes/font_size = 14
+text = "• 13 blast-shielded security chambers with overhead piping grid.
+• Periodic plasma purge chambers requiring active timing and evasion.
+• Flank conduits behind heavy blast shields offer sheltered passage."
+autowrap_mode = 2
+
+[node name="SelectButton" type="Button" parent="MarginContainer/VBox/ArenaList/CardReactor/VBox"]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_font_body")
+theme_override_font_sizes/font_size = 16
+text = "ENTER COMPLEX [ 3 ]"
+
+[node name="FooterInfo" type="HBoxContainer" parent="MarginContainer/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 28
+alignment = 1
+
+[node name="P1Info" type="Label" parent="MarginContainer/VBox/FooterInfo"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.2, 0.85, 1, 1)
+theme_override_fonts/font = ExtResource("3_font_body")
+theme_override_font_sizes/font_size = 14
+text = "Player 1: [W][A][S][D] + [E]"
+
+[node name="MatchRule" type="Label" parent="MarginContainer/VBox/FooterInfo"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.65, 0.75, 0.85, 0.8)
+theme_override_fonts/font = ExtResource("3_font_body")
+theme_override_font_sizes/font_size = 14
+text = "Best-of-3 Match | Automatic Role Switching | Select with Mouse or [1, 2, 3]"
+
+[node name="P2Info" type="Label" parent="MarginContainer/VBox/FooterInfo"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.38, 0.22, 1)
+theme_override_fonts/font = ExtResource("3_font_body")
+theme_override_font_sizes/font_size = 14
+text = "Player 2: [↑][←][↓][→] + [SPACE]"

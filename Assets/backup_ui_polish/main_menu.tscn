@@ -1,0 +1,455 @@
+[gd_scene load_steps=7 format=3 uid="uid://m1a2i3n4m5e6n"]
+
+[ext_resource type="Script" path="res://scripts/main_menu.gd" id="1_main_menu"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBox_BtnNormal"]
+content_margin_left = 16.0
+content_margin_top = 10.0
+content_margin_right = 16.0
+content_margin_bottom = 10.0
+bg_color = Color(0.07, 0.1, 0.15, 0.9)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.12, 0.55, 0.8, 0.6)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBox_BtnHover"]
+content_margin_left = 16.0
+content_margin_top = 10.0
+content_margin_right = 16.0
+content_margin_bottom = 10.0
+bg_color = Color(0.12, 0.18, 0.28, 0.95)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.2, 0.9, 1.0, 1.0)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBox_BtnPressed"]
+content_margin_left = 16.0
+content_margin_top = 10.0
+content_margin_right = 16.0
+content_margin_bottom = 10.0
+bg_color = Color(0.04, 0.06, 0.1, 1.0)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.1, 0.7, 0.95, 1.0)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBox_Panel"]
+content_margin_left = 24.0
+content_margin_top = 20.0
+content_margin_right = 24.0
+content_margin_bottom = 20.0
+bg_color = Color(0.05, 0.07, 0.11, 0.96)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.15, 0.5, 0.75, 0.7)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="Theme" id="Theme_Cyber"]
+Button/styles/disabled = SubResource("StyleBox_BtnNormal")
+Button/styles/focus = SubResource("StyleBox_BtnHover")
+Button/styles/hover = SubResource("StyleBox_BtnHover")
+Button/styles/normal = SubResource("StyleBox_BtnNormal")
+Button/styles/pressed = SubResource("StyleBox_BtnPressed")
+PanelContainer/styles/panel = SubResource("StyleBox_Panel")
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_Cyber")
+script = ExtResource("1_main_menu")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.04, 0.05, 0.08, 1)
+
+[node name="MainContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 60
+theme_override_constants/margin_top = 40
+theme_override_constants/margin_right = 60
+theme_override_constants/margin_bottom = 40
+
+[node name="ContentBox" type="VBoxContainer" parent="MainContainer"]
+layout_mode = 2
+theme_override_constants/separation = 28
+alignment = 1
+
+[node name="HeaderBox" type="VBoxContainer" parent="MainContainer/ContentBox"]
+layout_mode = 2
+theme_override_constants/separation = 4
+alignment = 1
+
+[node name="Title" type="Label" parent="MainContainer/ContentBox/HeaderBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.12, 0.85, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.8)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_font_sizes/font_size = 46
+text = "CHAOS CONTROL"
+horizontal_alignment = 1
+
+[node name="Subtitle" type="Label" parent="MainContainer/ContentBox/HeaderBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.28, 0.2, 1)
+theme_override_font_sizes/font_size = 20
+text = "SABOTAGE THE SYSTEM"
+horizontal_alignment = 1
+
+[node name="NavButtons" type="VBoxContainer" parent="MainContainer/ContentBox"]
+custom_minimum_size = Vector2(340, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = 14
+
+[node name="PlayButton" type="Button" parent="MainContainer/ContentBox/NavButtons"]
+custom_minimum_size = Vector2(0, 52)
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "PLAY QUICK MATCH"
+
+[node name="ArenaSelectButton" type="Button" parent="MainContainer/ContentBox/NavButtons"]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "ARENA SELECTION"
+
+[node name="HowToPlayButton" type="Button" parent="MainContainer/ContentBox/NavButtons"]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "HOW TO PLAY"
+
+[node name="SettingsButton" type="Button" parent="MainContainer/ContentBox/NavButtons"]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "SETTINGS"
+
+[node name="QuitButton" type="Button" parent="MainContainer/ContentBox/NavButtons"]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "QUIT TO DESKTOP"
+
+[node name="FooterInfo" type="Label" parent="MainContainer/ContentBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.6, 0.65, 0.75, 0.7)
+theme_override_font_sizes/font_size = 14
+text = "LOCAL 2-PLAYER SAME-KEYBOARD ARCADE • BEST OF 3 MATCHES"
+horizontal_alignment = 1
+
+[node name="Overlays" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 35
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 35
+
+[node name="ArenaSelectPanel" type="PanelContainer" parent="Overlays"]
+visible = false
+layout_mode = 2
+
+[node name="VBox" type="VBoxContainer" parent="Overlays/ArenaSelectPanel"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="PanelTitle" type="Label" parent="Overlays/ArenaSelectPanel/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.12, 0.85, 1, 1)
+theme_override_font_sizes/font_size = 28
+text = "ARENA SELECTION"
+horizontal_alignment = 1
+
+[node name="ArenaCards" type="HBoxContainer" parent="Overlays/ArenaSelectPanel/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 18
+
+[node name="CardTraining" type="Button" parent="Overlays/ArenaSelectPanel/VBox/ArenaCards"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 16
+text = "1. RESEARCH FACILITY
+
+[BIO-CONTAINMENT & LABS]
+
+• 14 partitioned research laboratories
+• Central octagon hub & hologram core
+• Laser barriers & chemical containment"
+
+[node name="CardGravity" type="Button" parent="Overlays/ArenaSelectPanel/VBox/ArenaCards"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 16
+text = "2. POWER CORE
+
+[HIGH-OUTPUT REACTOR]
+
+• Concentric stepped reactor tiers & core
+• 4 massive generators with impellers
+• Cardinal security corridors & bridges"
+
+[node name="CardReactor" type="Button" parent="Overlays/ArenaSelectPanel/VBox/ArenaCards"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 16
+text = "3. UNDERGROUND COMPLEX
+
+[FORTIFIED BUNKER NETWORK]
+
+• 13 blast-shielded security chambers
+• Heavy blast doors & hydraulic pumps
+• Central core vault & overhead pipeline grid"
+
+[node name="SelectedDescLabel" type="Label" parent="Overlays/ArenaSelectPanel/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = "SELECTED: [ RESEARCH FACILITY ]"
+horizontal_alignment = 1
+
+[node name="BottomActions" type="HBoxContainer" parent="Overlays/ArenaSelectPanel/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 24
+alignment = 1
+
+[node name="BackArenaButton" type="Button" parent="Overlays/ArenaSelectPanel/VBox/BottomActions"]
+custom_minimum_size = Vector2(180, 48)
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "BACK TO MENU"
+
+[node name="StartMatchButton" type="Button" parent="Overlays/ArenaSelectPanel/VBox/BottomActions"]
+custom_minimum_size = Vector2(240, 48)
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "START MATCH"
+
+[node name="HowToPlayPanel" type="PanelContainer" parent="Overlays"]
+visible = false
+layout_mode = 2
+
+[node name="VBox" type="VBoxContainer" parent="Overlays/HowToPlayPanel"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="HowToTitle" type="Label" parent="Overlays/HowToPlayPanel/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.12, 0.85, 1, 1)
+theme_override_font_sizes/font_size = 28
+text = "SYSTEM PROTOCOL // HOW TO PLAY"
+horizontal_alignment = 1
+
+[node name="ControlsRow" type="HBoxContainer" parent="Overlays/HowToPlayPanel/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 24
+
+[node name="P1Box" type="PanelContainer" parent="Overlays/HowToPlayPanel/VBox/ControlsRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VBox" type="VBoxContainer" parent="Overlays/HowToPlayPanel/VBox/ControlsRow/P1Box"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="Label" type="Label" parent="Overlays/HowToPlayPanel/VBox/ControlsRow/P1Box/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.2, 0.85, 1, 1)
+theme_override_font_sizes/font_size = 18
+text = "PLAYER 1 CONTROLS"
+horizontal_alignment = 1
+
+[node name="Keys" type="Label" parent="Overlays/HowToPlayPanel/VBox/ControlsRow/P1Box/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 15
+text = "• Move: [W] [A] [S] [D]
+• Override Terminal (Runner): [E]
+• Deploy Sabotage Trap (Saboteur): [E]"
+
+[node name="P2Box" type="PanelContainer" parent="Overlays/HowToPlayPanel/VBox/ControlsRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VBox" type="VBoxContainer" parent="Overlays/HowToPlayPanel/VBox/ControlsRow/P2Box"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="Label" type="Label" parent="Overlays/HowToPlayPanel/VBox/ControlsRow/P2Box/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.35, 0.2, 1)
+theme_override_font_sizes/font_size = 18
+text = "PLAYER 2 CONTROLS"
+horizontal_alignment = 1
+
+[node name="Keys" type="Label" parent="Overlays/HowToPlayPanel/VBox/ControlsRow/P2Box/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 15
+text = "• Move: [↑] [←] [↓] [→]
+• Deploy Sabotage Trap (Saboteur): [SPACE]
+• Override Terminal (Runner): [SPACE]"
+
+[node name="RulesBox" type="PanelContainer" parent="Overlays/HowToPlayPanel/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="VBox" type="VBoxContainer" parent="Overlays/HowToPlayPanel/VBox/RulesBox"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="RulesTitle" type="Label" parent="Overlays/HowToPlayPanel/VBox/RulesBox/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.25, 1)
+theme_override_font_sizes/font_size = 18
+text = "GAMEPLAY OBJECTIVES & ROLES"
+
+[node name="RulesText" type="Label" parent="Overlays/HowToPlayPanel/VBox/RulesBox/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "• OBJECTIVE RUNNER (CYAN):
+  Activate all 3 Control Terminals around the arena. Once complete, the North Extraction Gate unlocks in bright green. Reach the gate before the 120s timer expires to win!
+
+• SABOTEUR (CRIMSON):
+  Deploy EMP Disruption Hazards targeting the Runner (1s warning telegraph, 2s active field). Slows and glitches the Runner for 1.5s. Stall the Runner until the 120s timer expires!
+
+• MATCH FORMAT:
+  Best-of-3 rounds. Roles automatically switch after every round. Whoever scores 2 points wins the match!"
+autowrap_mode = 2
+
+[node name="BackHowToPlayButton" type="Button" parent="Overlays/HowToPlayPanel/VBox"]
+custom_minimum_size = Vector2(220, 46)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 18
+text = "BACK TO MENU"
+
+[node name="SettingsPanel" type="PanelContainer" parent="Overlays"]
+visible = false
+custom_minimum_size = Vector2(480, 320)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="VBox" type="VBoxContainer" parent="Overlays/SettingsPanel"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="SettingsTitle" type="Label" parent="Overlays/SettingsPanel/VBox"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.12, 0.85, 1, 1)
+theme_override_font_sizes/font_size = 26
+text = "SYSTEM SETTINGS"
+horizontal_alignment = 1
+
+[node name="SettingsList" type="VBoxContainer" parent="Overlays/SettingsPanel/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="FullscreenRow" type="HBoxContainer" parent="Overlays/SettingsPanel/VBox/SettingsList"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Overlays/SettingsPanel/VBox/SettingsList/FullscreenRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 17
+text = "Fullscreen Mode:"
+
+[node name="FullscreenCheck" type="CheckButton" parent="Overlays/SettingsPanel/VBox/SettingsList/FullscreenRow"]
+layout_mode = 2
+
+[node name="AudioRow" type="HBoxContainer" parent="Overlays/SettingsPanel/VBox/SettingsList"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Overlays/SettingsPanel/VBox/SettingsList/AudioRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 17
+text = "Mute Master Audio:"
+
+[node name="MuteCheck" type="CheckButton" parent="Overlays/SettingsPanel/VBox/SettingsList/AudioRow"]
+layout_mode = 2
+
+[node name="MusicRow" type="HBoxContainer" parent="Overlays/SettingsPanel/VBox/SettingsList"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Overlays/SettingsPanel/VBox/SettingsList/MusicRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 17
+text = "Music Volume:"
+
+[node name="MusicSlider" type="HSlider" parent="Overlays/SettingsPanel/VBox/SettingsList/MusicRow"]
+custom_minimum_size = Vector2(160, 24)
+layout_mode = 2
+size_flags_vertical = 4
+value = 75.0
+
+[node name="SfxRow" type="HBoxContainer" parent="Overlays/SettingsPanel/VBox/SettingsList"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Overlays/SettingsPanel/VBox/SettingsList/SfxRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 17
+text = "SFX Volume:"
+
+[node name="SfxSlider" type="HSlider" parent="Overlays/SettingsPanel/VBox/SettingsList/SfxRow"]
+custom_minimum_size = Vector2(160, 24)
+layout_mode = 2
+size_flags_vertical = 4
+value = 85.0
+
+[node name="ResolutionNote" type="Label" parent="Overlays/SettingsPanel/VBox/SettingsList"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.75, 0.8, 0.7)
+theme_override_font_sizes/font_size = 14
+text = "Rendering: 1280x720 Canvas Scaled (Supports 1080p, 1440p, 4K)"
+horizontal_alignment = 1
+
+[node name="BackSettingsButton" type="Button" parent="Overlays/SettingsPanel/VBox"]
+custom_minimum_size = Vector2(200, 46)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 18
+text = "BACK TO MENU"

@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Cyan Phantom — 3D Character</title>
+<style>
+:root{--bg:#0f1319;--fg:#e8eef4;--ac:#00bfff;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html,body{height:100%;margin:0;background:var(--bg);color:var(--fg);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;overflow:hidden}
+#v{position:fixed;inset:0}
+#bar{position:fixed;left:0;right:0;bottom:env(safe-area-inset-bottom,0px);display:flex;gap:6px;flex-wrap:wrap;justify-content:center;padding:10px}
+button{background:#1a2029;color:var(--fg);border:1px solid #34404e;border-radius:8px;padding:7px 11px;font-size:13px;cursor:pointer}
+button:hover,button.on{border-color:var(--ac);background:#10283a}
+h1{position:fixed;top:calc(10px + env(safe-area-inset-top,0px));left:14px;margin:0;font-size:15px;letter-spacing:.14em;text-transform:uppercase}
+h1 span{color:var(--ac)}
+small{position:fixed;top:calc(32px + env(safe-area-inset-top,0px));left:14px;opacity:.6;font-size:12px}
+</style></head><body>
+<div id="v"></div>
+<h1>Cyan <span>Phantom</span></h1><small>Drag to orbit · scroll to zoom · procedural 3D geometry</small>
+<div id="bar"></div>
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/controls/OrbitControls.js"></script>
+<script>
+const T=THREE,PI=Math.PI;
+const mk=(c,r,m,o)=>new T.MeshStandardMaterial(Object.assign({color:c,roughness:r,metalness:m},o||{}));
+const M={wht:mk(0xe4e8ec,.85,0),grey:mk(0xaeb8c3,.9,0,{side:T.DoubleSide}),blk:mk(0x20242b,.9,.02),gr:mk(0x292f39,.5,.35),
+cy:mk(0x00bfff,.3,.1,{emissive:0x006f99,emissiveIntensity:.8}),hw:mk(0x414b57,.4,.8),rub:mk(0x15181d,.9,0),
+sil:mk(0xaeb8c3,.35,.7),whd:mk(0xe4e8ec,.85,0,{side:T.DoubleSide}),
+vis:mk(0x0759b8,.05,.85,{emissive:0x04406e,emissiveIntensity:.9}),hel:mk(0x292f39,.35,.5)};
+const root=new T.Group();
+function rr(w,h,r){const s=new T.Shape(),x=-w/2,y=-h/2;s.moveTo(x+r,y);s.lineTo(x+w-r,y);s.quadraticCurveTo(x+w,y,x+w,y+r);s.lineTo(x+w,y+h-r);s.quadraticCurveTo(x+w,y+h,x+w-r,y+h);s.lineTo(x+r,y+h);s.quadraticCurveTo(x,y+h,x,y+h-r);s.lineTo(x,y+r);s.quadraticCurveTo(x,y,x+r,y);return s}
+function at(o,p,x,y,z){o.position.set(x||0,y||0,z||0);p.add(o);return o}
+function P(w,h,d,m,p,x,y,z){const b=Math.min(d*.28,.005),g=new T.ExtrudeGeometry(rr(w-2*b,h-2*b,Math.min(w,h)*.18),{depth:d-2*b,bevelEnabled:true,bevelThickness:b,bevelSize:b,bevelSegments:2});g.translate(0,0,-(d-2*b)/2);return at(new T.Mesh(g,m),p,x,y,z)}
+function C(rt,rb,h,m,p,x,y,z,sz){const o=new T.Mesh(new T.CylinderGeometry(rt,rb,h,24),m);if(sz)o.scale.z=sz;return at(o,p,x,y,z)}
+function S(r,m,p,x,y,z,sx,sy,sz){const o=new T.Mesh(new T.SphereGeometry(r,24,16),m);o.scale.set(sx||1,sy||1,sz||1);return at(o,p,x,y,z)}
+function side(r,rt,h,m,p,x,y,z){const o=C(r,r,h,m,p,x,y,z);o.rotation.z=PI/2;return o}
+
+// ---- jacket torso
+C(.15,.14,.16,M.blk,root,0,1.0,0,.72);
+C(.175,.135,.4,M.wht,root,0,1.26,0,.68);
+C(.16,.16,.05,M.wht,root,0,1.11,0,.74);               // hem
+[1,-1].forEach(s=>{P(.05,.34,.07,M.blk,root,s*.145,1.25,.0);P(.014,.14,.02,M.cy,root,s*.15,1.14,.075);
+ const e=P(.055,.055,.016,M.cy,root,s*.085,1.38,.118);e.rotation.z=PI/4;const e2=P(.026,.026,.018,M.blk,root,s*.085,1.38,.122);e2.rotation.z=PI/4;
+ P(.035,.2,.018,M.blk,root,s*.03,1.27,.12)});          // piping
+P(.014,.36,.012,M.blk,root,0,1.26,.122);               // zipper
+P(.022,.014,.014,M.hw,root,0,1.42,.126);
+P(.22,.24,.05,M.wht,root,0,1.3,-.1);P(.2,.025,.015,M.blk,root,0,1.36,-.125);P(.012,.2,.014,M.cy,root,0,1.28,-.128);
+C(.085,.08,.07,M.wht,root,0,1.5,0,.9);C(.045,.05,.09,M.blk,root,0,1.55,0);
+// ---- belt & pouches
+C(.162,.162,.05,M.blk,root,0,1.05,0,.73);P(.055,.04,.02,M.hw,root,0,1.05,.125);
+function pouch(th,h){const g=new T.Group();g.position.set(.163*Math.sin(th),1.03,.119*Math.cos(th));g.rotation.y=th;root.add(g);
+ P(.06,h,.04,M.blk,g,0,0,.02);P(.062,.022,.046,M.gr,g,0,h/2-.01,.022);P(.012,.012,.01,M.cy,g,0,h/2-.012,.05)}
+[.5,-.5].forEach(t=>pouch(t,.07));pouch(1.15,.075);pouch(-1.15,.06);
+// ---- helmet & hood
+const H=new T.Group();H.position.y=1.69;root.add(H);
+S(.125,M.hel,H,0,0,0,1,1.1,1.1);
+const vg=new T.SphereGeometry(.13,40,20,0,PI*2,0,1.0);vg.rotateX(PI/2);const vz=new T.Mesh(vg,M.vis);vz.scale.set(1.04,.6,1.12);at(vz,H,0,.008,0);
+P(.2,.012,.03,M.hw,H,0,.062,.13);P(.17,.01,.03,M.hw,H,0,-.045,.138);
+P(.05,.02,.03,M.gr,H,0,-.085,.115);P(.012,.1,.03,M.gr,H,0,.105,.08);P(.014,.06,.1,M.hw,H,0,.12,-.02);
+[1,-1].forEach(s=>{side(.044,0,.03,M.hw,H,s*.128,-.005,-.01);side(.032,0,.036,M.sil,H,s*.136,-.005,-.01);
+ side(.018,0,.04,M.rub,H,s*.139,-.005,-.01);side(.008,0,.044,M.cy,H,s*.141,-.005,-.01);
+ P(.02,.04,.05,M.hw,H,s*.12,.055,.02)});
+function hood(r,m,dy){const g=new T.SphereGeometry(r,36,20,PI*.82,PI*1.36);const o=new T.Mesh(g,m);o.scale.set(1.08,1.12,1.0);return at(o,H,0,.0+dy,-.045)}
+hood(.158,M.whd,0);hood(.15,M.grey,0);
+const lip=new T.Mesh(new T.TorusGeometry(.16,.014,10,40,PI*1.36),M.wht);lip.rotation.x=PI/2;lip.scale.set(1.08,1.0,1.12);lip.rotation.z=PI*.82+PI/2;
+C(.12,.2,.11,M.whd,H,0,-.14,-.03,.9);
+// ---- shoulders & arms
+[1,-1].forEach(s=>{
+ const sh=new T.Group();sh.position.set(s*.22,1.47,0);root.add(sh);
+ const d=new T.Mesh(new T.SphereGeometry(.082,24,12,0,PI*2,0,PI/2),M.gr);d.scale.set(1,.7,1.15);at(d,sh,s*.02,.012,0);
+ const e=new T.Mesh(new T.TorusGeometry(.082,.007,8,32),M.cy);e.rotation.x=PI/2;e.scale.set(1,1.15,1);at(e,sh,s*.02,.012,0);
+ const arm=new T.Group();arm.rotation.z=s*.4;sh.add(arm);
+ C(.052,.046,.28,M.wht,arm,0,-.14,0);P(.04,.1,.012,M.blk,arm,0,-.12,.052);
+ S(.047,M.wht,arm,0,-.29,0);P(.065,.075,.025,M.gr,arm,0,-.29,-.045);
+ C(.046,.04,.26,M.wht,arm,0,-.43,0);C(.052,.05,.03,M.blk,arm,0,-.33,0);
+ C(.053,.05,.1,M.cy,arm,0,-.53,0);C(.055,.055,.014,M.hw,arm,0,-.58,0);C(.055,.055,.014,M.hw,arm,0,-.48,0);
+ C(.04,.036,.03,M.blk,arm,0,-.6,0);
+ P(.068,.085,.034,M.blk,arm,0,-.65,0);P(.07,.022,.04,M.gr,arm,0,-.7,0);P(.024,.024,.01,M.cy,arm,0,-.65,.02);
+ [-.024,-.008,.008,.024].forEach((x,i)=>C(.0095,.0085,.075-Math.abs(i-1.5)*.006,M.blk,arm,x,-.755,.002));
+ const th=C(.01,.009,.05,M.blk,arm,-s*.04,-.67,.015);th.rotation.z=s*.6;
+});
+// ---- legs
+[1,-1].forEach(s=>{
+ const lg=new T.Group();lg.position.set(s*.1,.92,0);root.add(lg);
+ C(.085,.065,.42,M.blk,lg,0,-.23,0);
+ P(.075,.13,.04,M.blk,lg,s*.02,-.22,.085);P(.07,.03,.044,M.gr,lg,s*.02,-.165,.087);P(.012,.012,.01,M.cy,lg,s*.02,-.165,.11);
+ if(s>0){P(.05,.16,.05,M.gr,lg,s*.095,-.2,.02)}
+ C(.083,.083,.02,M.rub,lg,0,-.12,0);
+ P(.115,.135,.045,M.gr,lg,0,-.47,.07);P(.08,.1,.03,M.sil,lg,0,-.47,.095);
+ P(.06,.025,.02,M.sil,lg,0,-.405,.093).rotation.z=0;P(.1,.02,.03,M.hw,lg,0,-.405,.07);
+ C(.06,.045,.38,M.blk,lg,0,-.69,0);P(.085,.3,.035,M.gr,lg,0,-.69,.056);
+ [1,-1].forEach(k=>{P(.012,.27,.014,M.cy,lg,k*.027,-.69,.078);P(.014,.22,.014,M.cy,lg,k*.058,-.69,.03)});
+ C(.05,.052,.08,M.gr,lg,0,-.88,0);P(.03,.02,.02,M.cy,lg,0,-.88,.054);
+ const b=new T.Group();b.position.set(0,-.92,0);b.rotation.y=s*.12;lg.add(b);
+ P(.114,.036,.29,M.rub,b,0,.018,.04);
+ P(.1,.09,.2,M.blk,b,0,.08,.02);P(.098,.05,.07,M.gr,b,0,.06,.14);
+ P(.1,.05,.075,M.blk,b,0,.05,-.075);C(.058,.062,.11,M.gr,b,0,.15,-.01);
+ P(.014,.03,.02,M.cy,b,s*.06,.16,.02);C(.062,.062,.014,M.hw,b,0,.11,-.01);P(.1,.014,.03,M.hw,b,0,.1,.06);
+ [0,1,2,3].forEach(i=>P(.11,.006,.012,M.blk,b,0,.003,-.07+i*.07+.02));
+});
+root.traverse(o=>{if(o.isMesh){o.castShadow=true;o.receiveShadow=true}});
+
+// ---- scene
+const el=document.getElementById('v');
+const R=new T.WebGLRenderer({antialias:true});R.setPixelRatio(Math.min(devicePixelRatio,2));R.shadowMap.enabled=true;el.appendChild(R.domElement);
+const sc=new T.Scene();sc.background=new T.Color(0x0f1319);sc.fog=new T.Fog(0x0f1319,6,12);
+const cam=new T.PerspectiveCamera(32,1,.05,50);
+sc.add(new T.HemisphereLight(0xc8d4e4,0x1a1d24,1.0));
+const key=new T.DirectionalLight(0xffffff,1.5);key.position.set(2,3.5,3);key.castShadow=true;key.shadow.mapSize.set(2048,2048);
+Object.assign(key.shadow.camera,{left:-1.5,right:1.5,top:2.5,bottom:-.5});sc.add(key);
+const rim=new T.DirectionalLight(0x30b8ff,1.1);rim.position.set(-2.5,2,-3);sc.add(rim);
+const fill=new T.DirectionalLight(0x90a0b8,.5);fill.position.set(-3,1,2);sc.add(fill);
+const fl=new T.Mesh(new T.CircleGeometry(1.3,64),mk(0x171b22,.9,0));fl.rotation.x=-PI/2;fl.receiveShadow=true;sc.add(fl);
+const ring=new T.Mesh(new T.RingGeometry(1.0,1.02,64),new T.MeshBasicMaterial({color:0x00bfff,side:T.DoubleSide}));ring.rotation.x=-PI/2;ring.position.y=.002;sc.add(ring);
+sc.add(root);
+const ctl=new T.OrbitControls(cam,R.domElement);ctl.enableDamping=true;ctl.maxPolarAngle=PI*.52;
+const V={Front:[0,1,4.6,0,.95,0],Side:[4.6,1,0,0,.95,0],Rear:[0,1,-4.6,0,.95,0],'3/4':[3.2,1.4,3.4,0,.95,0],
+'Helmet':[.5,1.72,1.1,0,1.68,0],'Jacket':[1.2,1.3,2.0,0,1.28,0],'Belt':[1.1,1.0,1.6,0,.98,0],'Knees & boots':[1.3,.5,2.0,0,.4,0]};
+let goal=null;
+function go(n){const v=V[n];goal={p:new T.Vector3(v[0],v[1],v[2]),t:new T.Vector3(v[3],v[4],v[5])};auto=false;ab.classList.remove('on')}
+const bar=document.getElementById('bar');
+Object.keys(V).forEach(n=>{const b=document.createElement('button');b.textContent=n;b.onclick=()=>go(n);bar.appendChild(b)});
+let auto=true,wire=false;
+const ab=document.createElement('button');ab.textContent='Auto-rotate';ab.className='on';ab.onclick=()=>{auto=!auto;ab.classList.toggle('on',auto)};bar.appendChild(ab);
+const wb=document.createElement('button');wb.textContent='Wireframe';wb.onclick=()=>{wire=!wire;wb.classList.toggle('on',wire);Object.values(M).forEach(m=>m.wireframe=wire)};bar.appendChild(wb);
+cam.position.set(3.2,1.4,3.4);ctl.target.set(0,.95,0);
+function rs(){const w=innerWidth,h=innerHeight;R.setSize(w,h);cam.aspect=w/h;cam.fov=w<h?44:32;cam.updateProjectionMatrix()}
+addEventListener('resize',rs);rs();
+ctl.addEventListener('start',()=>{goal=null});
+(function loop(){requestAnimationFrame(loop);
+ if(goal){cam.position.lerp(goal.p,.08);ctl.target.lerp(goal.t,.08);if(cam.position.distanceTo(goal.p)<.01)goal=null}
+ else if(auto)root.rotation.y+=.006;
+ ctl.update();R.render(sc,cam)})();
+</script></body></html>

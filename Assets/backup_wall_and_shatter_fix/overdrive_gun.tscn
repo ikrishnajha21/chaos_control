@@ -1,0 +1,86 @@
+[gd_scene load_steps=10 format=3 uid="uid://b7vkm8w3n2x5q"]
+
+[ext_resource type="Script" path="res://scripts/weapons/overdrive_gun.gd" id="1_gun"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gunmetal"]
+albedo_color = Color(0.12, 0.14, 0.18, 1)
+metallic = 0.85
+roughness = 0.25
+
+[sub_resource type="BoxMesh" id="BoxMesh_receiver"]
+material = SubResource("StandardMaterial3D_gunmetal")
+size = Vector3(0.09, 0.14, 0.26)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_crimson"]
+albedo_color = Color(1, 0.12, 0.1, 1)
+emission_enabled = true
+emission = Color(1, 0.15, 0.08, 1)
+emission_energy_multiplier = 4.0
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_barrel"]
+material = SubResource("StandardMaterial3D_gunmetal")
+top_radius = 0.02
+bottom_radius = 0.024
+height = 0.22
+radial_segments = 12
+
+[sub_resource type="BoxMesh" id="BoxMesh_rail_glow"]
+material = SubResource("StandardMaterial3D_crimson")
+size = Vector3(0.015, 0.02, 0.24)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_core"]
+material = SubResource("StandardMaterial3D_crimson")
+radius = 0.024
+height = 0.1
+radial_segments = 10
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_flash"]
+shading_mode = 0
+albedo_color = Color(1, 0.35, 0.2, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_flash"]
+material = SubResource("StandardMaterial3D_flash")
+radius = 0.06
+height = 0.12
+
+[node name="OverdriveGun" type="Node3D"]
+script = ExtResource("1_gun")
+
+[node name="Visuals" type="Node3D" parent="."]
+
+[node name="ReceiverMesh" type="MeshInstance3D" parent="Visuals"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("BoxMesh_receiver")
+
+[node name="BarrelUpper" type="MeshInstance3D" parent="Visuals"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.035, -0.16)
+mesh = SubResource("CylinderMesh_barrel")
+
+[node name="BarrelLower" type="MeshInstance3D" parent="Visuals"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, -0.025, -0.16)
+mesh = SubResource("CylinderMesh_barrel")
+
+[node name="GlowRail_L" type="MeshInstance3D" parent="Visuals"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.048, 0.01, -0.05)
+mesh = SubResource("BoxMesh_rail_glow")
+
+[node name="GlowRail_R" type="MeshInstance3D" parent="Visuals"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.048, 0.01, -0.05)
+mesh = SubResource("BoxMesh_rail_glow")
+
+[node name="PlasmaCore" type="MeshInstance3D" parent="Visuals"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.015, 0.04)
+mesh = SubResource("CapsuleMesh_core")
+
+[node name="Muzzle" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.01, -0.28)
+
+[node name="MuzzleLight" type="OmniLight3D" parent="Muzzle"]
+visible = false
+light_color = Color(1, 0.15, 0.1, 1)
+light_energy = 3.5
+omni_range = 4.0
+
+[node name="MuzzleFlashMesh" type="MeshInstance3D" parent="Muzzle"]
+visible = false
+mesh = SubResource("SphereMesh_flash")

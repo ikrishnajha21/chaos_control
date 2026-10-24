@@ -1,0 +1,314 @@
+[gd_scene load_steps=22 format=3 uid="uid://b8yhq4w0j2w3b"]
+
+[ext_resource type="Script" path="res://scripts/characters/cyan_phantom_shatter_fx.gd" id="1_shatter"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_shockwave"]
+transparency = 1
+shading_mode = 0
+albedo_color = Color(0.12, 0.88, 1, 0.85)
+
+[sub_resource type="TorusMesh" id="TorusMesh_ring"]
+material = SubResource("StandardMaterial3D_shockwave")
+inner_radius = 0.85
+outer_radius = 1.05
+rings = 24
+ring_segments = 16
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_spark"]
+shading_mode = 0
+albedo_color = Color(0.35, 0.95, 1, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_spark"]
+material = SubResource("StandardMaterial3D_spark")
+radius = 0.06
+height = 0.12
+radial_segments = 4
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_carbon"]
+albedo_color = Color(0.12, 0.14, 0.18, 1)
+metallic = 0.4
+roughness = 0.55
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_white"]
+albedo_color = Color(0.9, 0.92, 0.96, 1)
+metallic = 0.2
+roughness = 0.35
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cyan"]
+albedo_color = Color(0.12, 0.88, 1, 1)
+emission_enabled = true
+emission = Color(0.12, 0.88, 1, 1)
+emission_energy_multiplier = 4.5
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_head"]
+radius = 0.18
+
+[sub_resource type="SphereMesh" id="SphereMesh_head"]
+material = SubResource("StandardMaterial3D_white")
+radius = 0.16
+height = 0.32
+radial_segments = 8
+
+[sub_resource type="BoxMesh" id="BoxMesh_visor"]
+material = SubResource("StandardMaterial3D_cyan")
+size = Vector3(0.24, 0.08, 0.12)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_chest"]
+size = Vector3(0.42, 0.35, 0.28)
+
+[sub_resource type="BoxMesh" id="BoxMesh_chest"]
+material = SubResource("StandardMaterial3D_white")
+size = Vector3(0.38, 0.32, 0.24)
+
+[sub_resource type="BoxMesh" id="BoxMesh_emblem"]
+material = SubResource("StandardMaterial3D_cyan")
+size = Vector3(0.16, 0.14, 0.04)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_torso"]
+size = Vector3(0.36, 0.32, 0.26)
+
+[sub_resource type="BoxMesh" id="BoxMesh_torso"]
+material = SubResource("StandardMaterial3D_carbon")
+size = Vector3(0.34, 0.28, 0.22)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_limb"]
+size = Vector3(0.16, 0.32, 0.16)
+
+[sub_resource type="BoxMesh" id="BoxMesh_shoulder"]
+material = SubResource("StandardMaterial3D_white")
+size = Vector3(0.2, 0.2, 0.2)
+
+[sub_resource type="BoxMesh" id="BoxMesh_arm"]
+material = SubResource("StandardMaterial3D_carbon")
+size = Vector3(0.14, 0.28, 0.14)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_shard"]
+size = Vector3(0.18, 0.18, 0.18)
+
+[sub_resource type="PrismMesh" id="PrismMesh_shard"]
+material = SubResource("StandardMaterial3D_cyan")
+size = Vector3(0.18, 0.26, 0.12)
+
+[node name="CyanPhantomShatterFX" type="Node3D"]
+script = ExtResource("1_shatter")
+
+[node name="FlashLight" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+light_color = Color(0.35, 0.92, 1, 1)
+light_energy = 9.0
+omni_range = 8.5
+
+[node name="ShockwaveRing" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+mesh = SubResource("TorusMesh_ring")
+
+[node name="SparkParticles" type="CPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+emitting = false
+amount = 45
+lifetime = 0.75
+one_shot = true
+explosiveness = 0.95
+emission_shape = 1
+emission_sphere_radius = 0.35
+direction = Vector3(0, 1, 0)
+spread = 180.0
+gravity = Vector3(0, -6, 0)
+initial_velocity_min = 6.0
+initial_velocity_max = 14.0
+scale_amount_min = 0.8
+scale_amount_max = 2.0
+mesh = SubResource("SphereMesh_spark")
+
+[node name="ElectricParticles" type="CPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+emitting = false
+amount = 30
+lifetime = 0.45
+one_shot = true
+explosiveness = 0.9
+emission_shape = 1
+emission_sphere_radius = 0.5
+direction = Vector3(0, 1, 0)
+spread = 180.0
+gravity = Vector3(0, 0, 0)
+initial_velocity_min = 3.0
+initial_velocity_max = 8.0
+scale_amount_min = 0.5
+scale_amount_max = 1.4
+mesh = SubResource("SphereMesh_spark")
+
+[node name="Fragments" type="Node3D" parent="."]
+
+[node name="Frag_Head" type="RigidBody3D" parent="Fragments"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.55, 0)
+collision_layer = 16
+collision_mask = 1
+
+[node name="Collision" type="CollisionShape3D" parent="Fragments/Frag_Head"]
+shape = SubResource("SphereShape3D_head")
+
+[node name="Mesh_Dome" type="MeshInstance3D" parent="Fragments/Frag_Head"]
+mesh = SubResource("SphereMesh_head")
+
+[node name="Mesh_Visor" type="MeshInstance3D" parent="Fragments/Frag_Head"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.02, 0.12)
+mesh = SubResource("BoxMesh_visor")
+
+[node name="Frag_Chest" type="RigidBody3D" parent="Fragments"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.15, 0.04)
+collision_layer = 16
+collision_mask = 1
+
+[node name="Collision" type="CollisionShape3D" parent="Fragments/Frag_Chest"]
+shape = SubResource("BoxShape3D_chest")
+
+[node name="Mesh_Chest" type="MeshInstance3D" parent="Fragments/Frag_Chest"]
+mesh = SubResource("BoxMesh_chest")
+
+[node name="Mesh_Emblem" type="MeshInstance3D" parent="Fragments/Frag_Chest"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.04, 0.13)
+mesh = SubResource("BoxMesh_emblem")
+
+[node name="Frag_Torso" type="RigidBody3D" parent="Fragments"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.85, 0)
+collision_layer = 16
+collision_mask = 1
+
+[node name="Collision" type="CollisionShape3D" parent="Fragments/Frag_Torso"]
+shape = SubResource("BoxShape3D_torso")
+
+[node name="Mesh_Torso" type="MeshInstance3D" parent="Fragments/Frag_Torso"]
+mesh = SubResource("BoxMesh_torso")
+
+[node name="Frag_Shoulder_R" type="RigidBody3D" parent="Fragments"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.32, 1.25, 0)
+collision_layer = 16
+collision_mask = 1
+
+[node name="Collision" type="CollisionShape3D" parent="Fragments/Frag_Shoulder_R"]
+shape = SubResource("BoxShape3D_shard")
+
+[node name="Mesh" type="MeshInstance3D" parent="Fragments/Frag_Shoulder_R"]
+mesh = SubResource("BoxMesh_shoulder")
+
+[node name="Frag_Shoulder_L" type="RigidBody3D" parent="Fragments"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.32, 1.25, 0)
+collision_layer = 16
+collision_mask = 1
+
+[node name="Collision" type="CollisionShape3D" parent="Fragments/Frag_Shoulder_L"]
+shape = SubResource("BoxShape3D_shard")
+
+[node name="Mesh" type="MeshInstance3D" parent="Fragments/Frag_Shoulder_L"]
+mesh = SubResource("BoxMesh_shoulder")
+
+[node name="Frag_Arm_R" type="RigidBody3D" parent="Fragments"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.38, 0.95, 0)
+collision_layer = 16
+collision_mask = 1
+
+[node name="Collision" type="CollisionShape3D" parent="Fragments/Frag_Arm_R"]
+shape = SubResource("BoxShape3D_limb")
+
+[node name="Mesh" type="MeshInstance3D" parent="Fragments/Frag_Arm_R"]
+mesh = SubResource("BoxMesh_arm")
+
+[node name="Frag_Arm_L" type="RigidBody3D" parent="Fragments"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.38, 0.95, 0)
+collision_layer = 16
+collision_mask = 1
+
+[node name="Collision" type="CollisionShape3D" parent="Fragments/Frag_Arm_L"]
+shape = SubResource("BoxShape3D_limb")
+
+[node name="Mesh" type="MeshInstance3D" parent="Fragments/Frag_Arm_L"]
+mesh = SubResource("BoxMesh_arm")
+
+[node name="Frag_Leg_R" type="RigidBody3D" parent="Fragments"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.18, 0.5, 0)
+collision_layer = 16
+collision_mask = 1
+
+[node name="Collision" type="CollisionShape3D" parent="Fragments/Frag_Leg_R"]
+shape = SubResource("BoxShape3D_limb")
+
+[node name="Mesh" type="MeshInstance3D" parent="Fragments/Frag_Leg_R"]
+mesh = SubResource("BoxMesh_arm")
+
+[node name="Frag_Leg_L" type="RigidBody3D" parent="Fragments"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.18, 0.5, 0)
+collision_layer = 16
+collision_mask = 1
+
+[node name="Collision" type="CollisionShape3D" parent="Fragments/Frag_Leg_L"]
+shape = SubResource("BoxShape3D_limb")
+
+[node name="Mesh" type="MeshInstance3D" parent="Fragments/Frag_Leg_L"]
+mesh = SubResource("BoxMesh_arm")
+
+[node name="Frag_Boot_R" type="RigidBody3D" parent="Fragments"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.18, 0.15, 0.05)
+collision_layer = 16
+collision_mask = 1
+
+[node name="Collision" type="CollisionShape3D" parent="Fragments/Frag_Boot_R"]
+shape = SubResource("BoxShape3D_shard")
+
+[node name="Mesh" type="MeshInstance3D" parent="Fragments/Frag_Boot_R"]
+mesh = SubResource("BoxMesh_shoulder")
+
+[node name="Frag_Boot_L" type="RigidBody3D" parent="Fragments"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.18, 0.15, 0.05)
+collision_layer = 16
+collision_mask = 1
+
+[node name="Collision" type="CollisionShape3D" parent="Fragments/Frag_Boot_L"]
+shape = SubResource("BoxShape3D_shard")
+
+[node name="Mesh" type="MeshInstance3D" parent="Fragments/Frag_Boot_L"]
+mesh = SubResource("BoxMesh_shoulder")
+
+[node name="Frag_Shard_1" type="RigidBody3D" parent="Fragments"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.15, 1.1, 0.12)
+collision_layer = 16
+collision_mask = 1
+
+[node name="Collision" type="CollisionShape3D" parent="Fragments/Frag_Shard_1"]
+shape = SubResource("BoxShape3D_shard")
+
+[node name="Mesh" type="MeshInstance3D" parent="Fragments/Frag_Shard_1"]
+mesh = SubResource("PrismMesh_shard")
+
+[node name="Frag_Shard_2" type="RigidBody3D" parent="Fragments"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.15, 1.1, 0.12)
+collision_layer = 16
+collision_mask = 1
+
+[node name="Collision" type="CollisionShape3D" parent="Fragments/Frag_Shard_2"]
+shape = SubResource("BoxShape3D_shard")
+
+[node name="Mesh" type="MeshInstance3D" parent="Fragments/Frag_Shard_2"]
+mesh = SubResource("PrismMesh_shard")
+
+[node name="Frag_Shard_3" type="RigidBody3D" parent="Fragments"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, -0.12)
+collision_layer = 16
+collision_mask = 1
+
+[node name="Collision" type="CollisionShape3D" parent="Fragments/Frag_Shard_3"]
+shape = SubResource("BoxShape3D_shard")
+
+[node name="Mesh" type="MeshInstance3D" parent="Fragments/Frag_Shard_3"]
+mesh = SubResource("PrismMesh_shard")
+
+[node name="Frag_Shard_4" type="RigidBody3D" parent="Fragments"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.35, -0.12)
+collision_layer = 16
+collision_mask = 1
+
+[node name="Collision" type="CollisionShape3D" parent="Fragments/Frag_Shard_4"]
+shape = SubResource("BoxShape3D_shard")
+
+[node name="Mesh" type="MeshInstance3D" parent="Fragments/Frag_Shard_4"]
+mesh = SubResource("PrismMesh_shard")
